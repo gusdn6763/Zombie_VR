@@ -35,9 +35,9 @@ public class Player : MovingObject
         head = GetComponent<XRRig>().cameraGameObject;
     }
 
-    public override void Start()
+    public void Start()
     {
-        base.Start();
+        currentHp = HP;
         PositionController();
     }
 
@@ -101,7 +101,7 @@ public class Player : MovingObject
     /// 데미지 공격받을시
     /// </summary>
     /// <param name="damage"></param>
-    public override void Damaged(float damage)
+    public override void Damaged(int damage)
     {
         StartCoroutine(Dmgshake.ShakeCamera());
         base.Damaged(damage);

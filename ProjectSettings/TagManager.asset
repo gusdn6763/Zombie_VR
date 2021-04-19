@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Left
   - Right
+  - Monster
+  - Part
   layers:
   - Default
   - TransparentFX

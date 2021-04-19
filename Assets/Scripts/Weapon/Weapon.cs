@@ -9,7 +9,7 @@ public class Weapon : XRGrabInteractable
     [Header("무기정보")]
     public Vector3 leftAttachPos;
     public Vector3 rightAttachPos;
-    public float damage = 0f;
+    public int damage = 0;
 
     protected override void OnSelectEntering(SelectEnterEventArgs args)
     {

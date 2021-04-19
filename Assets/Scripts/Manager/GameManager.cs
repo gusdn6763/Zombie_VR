@@ -22,8 +22,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<Mob> mobs = new List<Mob>();
     [SerializeField] private Transform spawnPoint;
 
-    private Player player;
-    private Transform[] spawnPoints;
+    private Transform[] spawnPoints = null;
 
     public string currenBgm;
     public float spawnTime;
@@ -78,7 +77,7 @@ public class GameManager : MonoBehaviour
 
     public void MenuScene()
     {
-        player.gameObject.SetActive(false);
+        Player.instance.gameObject.SetActive(false);
         currenBgm = Constant.mainMenuBgm;
         SoundManager.instance.PlayBgm(currenBgm);
         //CallLoad(true);

@@ -3,18 +3,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using UnityEngine.XR;
+using UnityEngine.XR.Interaction.Toolkit;
 
-[System.Serializable]
-public class Zombie_Parts
-{
-    public string partName;
-    public BoxCollider collObject;
-    public GameObject brokeObject;
-}
 public class Zombie : Mob
 {
-    public Action<int> test;
-    [SerializeField] private Zombie_Parts[] zombie_Parts;
+    [SerializeField] private Part[] zombie_Parts;
 
+    public override void Start()
+    {
+        base.Start();
+
+        speed = UnityEngine.Random.Range(0, 4);
+        for (int i = 0; i < zombie_Parts.Length; i++)
+        {
+            zombie_Parts[i].hpDelivery += Damaged;
+        }
+    }
+
+    public override void Damaged(int damage)
+    {
+        base.Damaged(damage);
+    }
 
 }

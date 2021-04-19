@@ -45,6 +45,7 @@ public class Gun : Weapon
 
     IEnumerator Reloading()
     {
+        SoundManager.instance.PlaySE("Reloading");
         isReloading = true;
         yield return new WaitForSeconds(reloadTime);
         //각종 변숫값의 초기화
@@ -80,6 +81,7 @@ public class Gun : Weapon
     public void BulletActive(BulletCtrl bullet)
     {
         muzzleFlash.Play();
+        SoundManager.instance.PlaySE("Shoot");
         bullet.barrelLocation = barrelLocation;
         bullet.damage = damage;
         bullet.gameObject.SetActive(true);

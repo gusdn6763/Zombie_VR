@@ -9,8 +9,8 @@ public class BulletCtrl : MonoBehaviour
     private TrailRenderer trailRenderer;
 
     public Transform barrelLocation;
-    public float damage;
     public float shotPower;
+    public int damage;
 
     private void Awake()
     {
@@ -19,10 +19,14 @@ public class BulletCtrl : MonoBehaviour
     }
     private void OnEnable()
     {
-        transform.position = barrelLocation.position;
-        transform.rotation = barrelLocation.rotation;
-        rigi.velocity = barrelLocation.forward * shotPower;
-        StartCoroutine(BulletDisable());
+        if (barrelLocation != null)
+        {
+            transform.position = barrelLocation.position;
+            transform.rotation = barrelLocation.rotation;
+            rigi.AddForce(barrelLocation.forward * shotPower);
+            
+            StartCoroutine(BulletDisable());
+        }
     }
 
     private void OnDisable()
@@ -40,16 +44,16 @@ public class BulletCtrl : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    void OnTriggerEnter2D(Collider2D Col)
+    void OnTriggerEnter(Collider Col)
     {
-        if (Col.gameObject.CompareTag("Monster"))
+        if (Col.gameObject.CompareTag(Constant.monster))
         {
             Col.GetComponent<MovingObject>().Damaged(damage);
             gameObject.SetActive(false);
         }
-        else if (Col.gameObject.CompareTag("Part"))
+        if (Col.gameObject.CompareTag(Constant.zombiePart))
         {
-            //Col.gameObject<>();
+            Col.GetComponent<Part>().Damaged(damage);
             gameObject.SetActive(false);
         }
 

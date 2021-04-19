@@ -16,12 +16,7 @@ public class MovingObject : MonoBehaviour
 
     }
 
-    public virtual void Start()
-    {
-        currentHp = HP;
-    }
-
-    public virtual void Damaged(float damage)
+    public virtual void Damaged(int damage)
     {
         currentHp -= damage;
         if (currentHp <= 0)
