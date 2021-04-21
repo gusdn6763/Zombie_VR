@@ -19,6 +19,9 @@ public class Gun : Weapon
     public int remainingBullet = 10;
     //재장전 시간
     public float reloadTime = 2.0f;
+    //총 발사 딜레이
+    public float delayTime = 0f;
+    //총 발사 여부
     //재장전 여부를 판단할 변수
     private bool isReloading = false;
 
@@ -28,9 +31,17 @@ public class Gun : Weapon
         animator = GetComponent<Animator>();
         muzzleFlash = barrelLocation.GetComponentInChildren<ParticleSystem>();
     }
+
     public override void Attack()
     {
-        base.Attack();
+        if (!attackCheck)
+        {
+            attackCheck = true;
+            StartCoroutine(AttackCoroutine());
+        }
+    }
+    IEnumerator AttackCoroutine()
+    {
         if (!isReloading)
         {
             --remainingBullet;
@@ -41,8 +52,9 @@ public class Gun : Weapon
                 StartCoroutine(Reloading());
             }
         }
+        yield return new WaitForSeconds(delayTime);
+        attackCheck = false;
     }
-
     IEnumerator Reloading()
     {
         SoundManager.instance.PlaySE("Reloading");

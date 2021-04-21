@@ -8,6 +8,9 @@ TagManager:
   - Right
   - Monster
   - Part
+  - Warning
+  - Weapon
+  - Wall
   layers:
   - Default
   - TransparentFX

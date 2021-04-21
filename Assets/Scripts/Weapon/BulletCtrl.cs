@@ -44,18 +44,17 @@ public class BulletCtrl : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    void OnTriggerEnter(Collider Col)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (Col.gameObject.CompareTag(Constant.monster))
+        if (collision.gameObject.CompareTag(Constant.monster))
         {
-            Col.GetComponent<MovingObject>().Damaged(damage);
+            collision.gameObject.GetComponent<MovingObject>().Damaged(damage);
             gameObject.SetActive(false);
         }
-        if (Col.gameObject.CompareTag(Constant.zombiePart))
+        if (collision.gameObject.CompareTag(Constant.zombiePart))
         {
-            Col.GetComponent<Part>().Damaged(damage);
+            collision.gameObject.GetComponent<Part>().Damaged(damage);
             gameObject.SetActive(false);
         }
-
     }
 }

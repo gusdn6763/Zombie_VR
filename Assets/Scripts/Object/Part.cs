@@ -7,33 +7,31 @@ public class Part : MonoBehaviour
 {
     [SerializeField] private float hp;
 
-    private BoxCollider collObject;
-    public Action<int> hpDelivery;
+    public BoxCollider[] collObjects;
     public GameObject[] brokeObjects;
+    public Action<int, string> hpDelivery;
     public string partName;
-
-
-    private void Awake()
-    {
-        collObject = GetComponent<BoxCollider>();
-    }
-
-    public void BrokenPart()
-    {
-        for (int i = 0; i < brokeObjects.Length; i++)
-        {
-            Destroy(brokeObjects[i]);
-        }
-    }
+    public bool broken = false;
 
     public void Damaged(int damage)
     {
         hp -= damage;
-        hpDelivery(damage);
-        if (hp <= 0)
+        if (!broken)
         {
-            BrokenPart();
+            hpDelivery(damage, "");
+            if (hp <= 0)
+            {
+                broken = true;
+                hpDelivery(0, partName);
+                for (int i = 0; i < brokeObjects.Length; i++)
+                {
+                    Destroy(brokeObjects[i]);
+                    collObjects[i].enabled = false;                    
+                }
+            }
         }
     }
+
+
 
 }

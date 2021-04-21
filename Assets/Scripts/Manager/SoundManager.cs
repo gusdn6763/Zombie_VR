@@ -21,6 +21,7 @@ public class SoundManager : MonoBehaviour
     public Sound[] effectSounds;
     public Sound[] bgmSounds;
 
+
     public bool soundIsOn = true;
     public bool bgmIsOn = true;
 
@@ -36,14 +37,7 @@ public class SoundManager : MonoBehaviour
             DontDestroyOnLoad(this);
         }
         audioSourceEffects = GetComponentsInChildren<AudioSource>();
-    }
-    void Start()
-    {
         playSoundName = new string[audioSourceEffects.Length];
-        if (bgmIsOn)
-        {
-            audioSourceBgm.Play();
-        }
     }
 
     public void PlaySE(string _name)
@@ -58,6 +52,7 @@ public class SoundManager : MonoBehaviour
                     {
                         if (!audioSourceEffects[j].isPlaying)
                         {
+ 
                             playSoundName[j] = effectSounds[i].name;
                             audioSourceEffects[j].clip = effectSounds[i].clip;
                             audioSourceEffects[j].Play();

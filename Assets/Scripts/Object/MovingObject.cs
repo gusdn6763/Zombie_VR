@@ -7,7 +7,7 @@ public class MovingObject : MonoBehaviour
 {
     public float HP;
     public float currentHp;
-    public float speed;
+    public float speed = 0f;
     public bool dmgCheck = true;
     public bool isDie = false;
 

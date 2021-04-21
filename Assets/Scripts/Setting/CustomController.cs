@@ -45,16 +45,9 @@ public class CustomController : MonoBehaviour
         }
         if (currentUsingDevice.TryGetFeatureValue(CommonUsages.triggerButton, out menuButtonValue) && menuButtonValue && weapon != null)
         {
-            if (oneClicktriggerButtonCheck == false)
-            {
-                weapon.Attack();
-                oneClicktriggerButtonCheck = true;
-            }
+            weapon.Attack();
         }
-        else
-        {
-            oneClicktriggerButtonCheck = false;
-        }
+
     }
 
     //바이브인지 오큘러스 리프트인지 확인하고 연결해주는 함수

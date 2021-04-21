@@ -16,7 +16,7 @@ public class Player : MovingObject
 
     public HandState usingGrab;                                 //현재 사용하고있는 손
 
-    public float mass;
+    public float mass = 1f;
 
     public override void Awake()
     {
@@ -38,30 +38,14 @@ public class Player : MovingObject
     public void Start()
     {
         currentHp = HP;
-        PositionController();
     }
 
     private void Update()
     {
-        PositionController(); 
         CheckForInput();
         ApplyGravity();
     }
 
-    /// <summary>
-    /// 현재 위치 설정
-    /// </summary>
-    void PositionController()
-    {
-        float headHeight = Mathf.Clamp(head.transform.localPosition.y, 1, 2);
-        characterController.height = headHeight;
-
-        Vector3 newCenter = Vector3.zero;
-        newCenter.x = head.transform.localPosition.x;
-        newCenter.z = head.transform.localPosition.z;
-
-        characterController.center = newCenter;
-    }
 
     /// <summary>
     /// 설정된 컨트롤러중에 입력이 있을시 이동처리

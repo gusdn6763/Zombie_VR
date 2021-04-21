@@ -6,7 +6,7 @@ public class ObjectPoolManager : MonoBehaviour
 {
     public static ObjectPoolManager instance;
 
-    public List<Gun> guns = new List<Gun>();
+    public Gun gun;
     public List<BulletCtrl> bulletManager = new List<BulletCtrl>();
     public Transform bulletBox;
     public BulletCtrl bullet;
@@ -42,6 +42,15 @@ public class ObjectPoolManager : MonoBehaviour
             bulletManager.Add(bulletTmp);
             bulletTmp.transform.name = "Bullet" + i.ToString();
             bulletTmp.gameObject.SetActive(false);
+        }
+    }
+
+    IEnumerator MakeGun()
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            Instantiate(gun, transform);
+            yield return new WaitForSeconds(1f);
         }
     }
 }
