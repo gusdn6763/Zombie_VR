@@ -149,7 +149,10 @@ public class CustomController : MonoBehaviour
 
     public void GetWeapon(Weapon weapon)
     {
-        this.weapon = weapon;
+        if (weapon != null)
+        {
+            this.weapon = weapon;
+        }
     }
 
     public void DropWeapon()

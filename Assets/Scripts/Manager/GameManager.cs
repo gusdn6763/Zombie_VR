@@ -19,16 +19,21 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
+    [SerializeField] private Gun gun;
     [SerializeField] private List<Mob> mobs = new List<Mob>();
     [SerializeField] private Transform spawnPoint;
+    [SerializeField] private int currrentMobCount;
+    [SerializeField] private int mobMaxCount;
+    [SerializeField] private float spawnTime;
 
     private Transform[] spawnPoints = null;
 
+    private int gameLevel;
     public string currenBgm;
     public bool isGameOver;
-    public float spawnTime;
-    public int currrentMobCount;
-    public int mobMaxCount;
+
+
+    public int MyGameLevel { get; set; }
 
     private void Awake()
     {
@@ -44,23 +49,29 @@ public class GameManager : MonoBehaviour
         spawnPoints = spawnPoint.GetComponentsInChildren<Transform>();
     }
 
+    void Start()
+    {
+        ChooseLevel(1);
+    }
 
     public void ChooseLevel(int level)
     {
-        StartCoroutine(StartGame(level));
+        gameLevel = level;
+        StartCoroutine(StartGame());
     }
 
-    IEnumerator StartGame(int level)
+    IEnumerator StartGame()
     {
         for (int i = 0; i < 10; i++)
         {
-            SoundManager.instance.PlaySE(Constant.countDown + (10 - i).ToString());
+            ObjectPoolManager.instance.MakeGun();
             yield return new WaitForSeconds(1f);
+            SoundManager.instance.PlaySE(Constant.countDown + (10 - i).ToString());
         }
-        StartCoroutine(CreateEnemy(level));
+        StartCoroutine(CreateEnemy());
     }
 
-    public IEnumerator CreateEnemy(int level)
+    public IEnumerator CreateEnemy()
     {
         while (true)
         {
@@ -71,14 +82,8 @@ public class GameManager : MonoBehaviour
                 Mob mob = Instantiate(mobs[Random.Range(0, mobs.Count)], spawnPoints[idx].position, spawnPoints[idx].rotation);
                 mob.transform.SetParent(spawnPoints[idx]);
                 mob.transform.position = spawnPoints[idx].transform.position;
-                EnhancedMob(mob, level);
             }
         }
-    }
-
-    public void EnhancedMob(Mob mob, int level)
-    {
-        mob.speed += level;
     }
 
     ///// <summary>

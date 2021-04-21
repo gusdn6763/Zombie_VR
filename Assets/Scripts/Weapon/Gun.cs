@@ -60,10 +60,8 @@ public class Gun : Weapon
         SoundManager.instance.PlaySE("Reloading");
         isReloading = true;
         yield return new WaitForSeconds(reloadTime);
-        //각종 변숫값의 초기화
         isReloading = false;
         remainingBullet = maxBullet;
-        //남은 총알 수 갱신
         //UpdateBulletText();
     }
 

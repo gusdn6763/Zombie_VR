@@ -18,7 +18,7 @@ public class Player : MovingObject
 
     public float mass = 1f;
 
-    public override void Awake()
+    public void Awake()
     {
         if (instance == null)
         {
@@ -29,7 +29,6 @@ public class Player : MovingObject
             Destroy(this);
         }
         DontDestroyOnLoad(this);
-        base.Awake();
         Dmgshake = GetComponent<Shake>();
         characterController = GetComponent<CharacterController>();
         head = GetComponent<XRRig>().cameraGameObject;
@@ -37,7 +36,7 @@ public class Player : MovingObject
 
     public void Start()
     {
-        currentHp = HP;
+        currentHp = hp;
     }
 
     private void Update()
@@ -91,15 +90,9 @@ public class Player : MovingObject
         base.Damaged(damage);
     }
 
-    public override void Die()
-    {
-        base.Die();
-    }
-
     public void Dead()
     {
         StopAllCoroutines();
-        dmgCheck = false;
         gameObject.SetActive(false);
     }
 }

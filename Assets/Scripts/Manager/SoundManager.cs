@@ -38,6 +38,7 @@ public class SoundManager : MonoBehaviour
         }
         audioSourceEffects = GetComponentsInChildren<AudioSource>();
         playSoundName = new string[audioSourceEffects.Length];
+        PlaySEVolume(0.5f);
     }
 
     public void PlaySE(string _name)

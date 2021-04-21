@@ -10,6 +10,7 @@ public class SettingView : MonoBehaviour
     public Slider musicVolume;
     public Slider soundVolume;
 
+
     private void OnEnable()
     {
         musicOn.isOn = SoundManager.instance.bgmIsOn;

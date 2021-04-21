@@ -5,16 +5,9 @@ using UnityEngine;
 
 public class MovingObject : MonoBehaviour
 {
-    public float HP;
+    public float hp;
     public float currentHp;
-    public float speed = 0f;
-    public bool dmgCheck = true;
-    public bool isDie = false;
-
-    public virtual void Awake()
-    {
-
-    }
+    public float speed;
 
     public virtual void Damaged(int damage)
     {
@@ -27,6 +20,7 @@ public class MovingObject : MonoBehaviour
 
     public virtual void Die()
     {
-        Debug.Log(this.gameObject.name+"죽음");
+        speed = 0f;
+        StopAllCoroutines();
     }
 }

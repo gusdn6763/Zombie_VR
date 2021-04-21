@@ -45,12 +45,11 @@ public class ObjectPoolManager : MonoBehaviour
         }
     }
 
-    IEnumerator MakeGun()
+    /// <summary>
+    /// 디버깅
+    /// </summary>
+    public void MakeGun()
     {
-        for (int i = 0; i < 5; i++)
-        {
-            Instantiate(gun, transform);
-            yield return new WaitForSeconds(1f);
-        }
+        Instantiate(gun, transform);
     }
 }

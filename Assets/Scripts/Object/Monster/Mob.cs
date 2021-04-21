@@ -9,43 +9,29 @@ public enum CharacterStatus
     IDLE,
     TRACE,
     ATTACK,
-    DIE
 }
 
-[RequireComponent(typeof(Animator), typeof(NavMeshAgent), typeof(AudioSource))]
+[RequireComponent(typeof(Animator), typeof(NavMeshAgent), typeof(Rigidbody))]
 public class Mob : MovingObject
 {
     [SerializeField] protected float viewRange = 45.0f;
     [SerializeField] protected float attackDist;
-    [SerializeField] protected float damage = 2;
+    [SerializeField] protected int damage;
     [SerializeField] protected bool isAttack;
 
+    private Rigidbody rigi;
     private NavMeshAgent agent;
     private AudioSource threatSound;
     protected Animator animator;
-    public Transform target;
+    protected Transform target;
 
-    private Vector3 _traceTarget;
     private float damping = 1.0f;       //회전할 때의 속도를 조절하는 계수
     private bool soundPlaying = false;
     public CharacterStatus enemyStatus;
 
-    public Vector3 traceTarget
+    public virtual void Awake()
     {
-        get { return _traceTarget; }
-        set
-        {
-            _traceTarget = value;
-            agent.speed = speed;
-            //추적 상태의 회전계수
-            damping = 7.0f;
-            TraceTarget(_traceTarget);
-        }
-    }
-
-    public override void Awake()
-    {
-        base.Awake();
+        rigi = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         threatSound = GetComponent<AudioSource>();
@@ -53,11 +39,10 @@ public class Mob : MovingObject
 
     public virtual void Start()
     {
-        currentHp = HP;
         target = Player.instance.transform;
+        currentHp = hp;
         agent.autoBraking = false;
         agent.updateRotation = false;
-        threatSound.volume = 0f;
     }
 
     public virtual void Update()
@@ -84,23 +69,20 @@ public class Mob : MovingObject
 
     IEnumerator CheckState()
     {
-        //오브젝트 풀에 생성 시 다른 스크립트의 초기화를 위해 대기
         yield return new WaitForSeconds(1.0f);
 
-        while (!isDie)
+        while (true)
         {
-            if (enemyStatus == CharacterStatus.DIE)
-            {
-                yield break;
-            }
             float dist = Vector3.Distance(target.position, transform.position);
             if(dist <= 10 && threatSound.clip != null)
             {
                 threatSound.volume = 1 - (dist / 10);
                 if (!soundPlaying)
                 {
+                    threatSound.Play();
                     soundPlaying = true;
-                    StartCoroutine(ThreatSound());
+                    yield return new WaitForSeconds(threatSound.clip.length);
+                    soundPlaying = false;
                 }
             }
             if (dist <= attackDist && isViewPlayer())
@@ -113,12 +95,6 @@ public class Mob : MovingObject
             }
             yield return (0.3f);
         }
-    }
-    IEnumerator ThreatSound()
-    {
-        threatSound.Play();
-        yield return new WaitForSeconds(threatSound.clip.length);
-        soundPlaying = false;
     }
 
     public bool isViewPlayer()
@@ -137,7 +113,6 @@ public class Mob : MovingObject
         return isView;
     }
 
-
     //주인공을 추적할 때 이동시키는 함수
     void TraceTarget(Vector3 pos)
     {
@@ -148,10 +123,9 @@ public class Mob : MovingObject
 
     IEnumerator Action()
     {
-        while (!isDie)
+        while (true)
         {
             yield return (0.3f);
-            //상태에 따라 분기 처리
             switch (enemyStatus)
             {
                 case CharacterStatus.TRACE:
@@ -160,7 +134,9 @@ public class Mob : MovingObject
                         isAttack = false;
                         animator.SetBool(Constant.attack, isAttack);
                     }
-                    traceTarget = target.position;
+                    agent.speed = speed;
+                    damping = 7.0f;
+                    TraceTarget(target.position);
                     animator.SetBool(Constant.move, true);
                     break;
                 case CharacterStatus.ATTACK:
@@ -172,24 +148,13 @@ public class Mob : MovingObject
                         animator.SetBool(Constant.attack, isAttack);
                     }
                     break;
-                case CharacterStatus.DIE:
-                    this.gameObject.tag = "Untagged";
-                    isDie = true;
-                    isAttack = false;
-                    Stop();
-                    animator.SetTrigger(Constant.die);
-                    break;
             }
         }
     }
 
-    public virtual void Attacked()
-    {
-        isAttack = false;
-        animator.SetBool(Constant.attack, isAttack);
-    }
-
-    //순찰 및 추적을 정지시키는 함수
+    /// <summary>
+    /// 순찰 및 추적을 정지시키는 함수
+    /// </summary>
     public void Stop()
     {
         agent.isStopped = true;
@@ -198,39 +163,26 @@ public class Mob : MovingObject
 
     public override void Die()
     {
-        enemyStatus = CharacterStatus.DIE;
         base.Die();
+        gameObject.tag = "Untagged";
+        isAttack = false;
+        Stop();
+        animator.SetTrigger(Constant.die);
     }
-    public void Dead()              //애니메이션에서 실행
+
+    /// <summary>
+    /// 애니메이션에서 실행
+    /// </summary>
+    public virtual void Dead()              
     {
-        if (threatSound.isPlaying)
-        {
-            threatSound.Stop();
-        }
-        Destroy(this.gameObject);
+        Destroy(this.gameObject, 1f);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Wall"))
+        if (isAttack && collision.gameObject.CompareTag("Player"))
         {
-            Stop();
-        }
-    }
-
-    private void OnCollisionStay(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Wall"))
-        {
-            Stop();
-        }
-    }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Wall"))
-        {
-            print("a");
-            Stop();
+            collision.gameObject.GetComponent<Player>().Damaged(damage);
         }
     }
 }

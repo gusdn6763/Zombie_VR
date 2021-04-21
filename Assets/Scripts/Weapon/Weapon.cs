@@ -14,9 +14,14 @@ public class Weapon : XRGrabInteractable
     protected bool attackCheck = false;
     public int damage = 0;
 
+
     protected override void OnSelectEntering(SelectEnterEventArgs args)
     {
-        args.interactor.GetComponentInChildren<CustomController>().GetWeapon(this);
+        Debug.Log(typeof(Weapon).IsAssignableFrom(typeof(Gun)));
+        if (typeof(Weapon).IsAssignableFrom(typeof(Gun)))
+        {
+            args.interactor.GetComponentInChildren<CustomController>().GetWeapon(this);
+        }
         if (args.interactor.CompareTag(Constant.handRight))
         {
             attachTransform.localPosition = rightAttachPos;
@@ -32,6 +37,8 @@ public class Weapon : XRGrabInteractable
 
     public virtual void Attack()
     {
-        
+
     }
+
+    
 }

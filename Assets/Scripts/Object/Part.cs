@@ -13,6 +13,8 @@ public class Part : MonoBehaviour
     public string partName;
     public bool broken = false;
 
+    public float MyHp { get; set; }
+
     public void Damaged(int damage)
     {
         hp -= damage;
