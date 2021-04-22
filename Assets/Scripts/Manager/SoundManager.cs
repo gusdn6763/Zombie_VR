@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -85,6 +86,7 @@ public class SoundManager : MonoBehaviour
         }
         Debug.Log("재생 중인" + _name + "사운드가 없습니다.");
     }
+
     public void CheckSound(bool isOn)
     {
         soundIsOn = isOn;

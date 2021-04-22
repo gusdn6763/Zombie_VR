@@ -56,5 +56,9 @@ public class BulletCtrl : MonoBehaviour
             collision.gameObject.GetComponent<Mob>().Damaged(damage);
             gameObject.SetActive(false);
         }
+        else
+        {
+            gameObject.SetActive(false);
+        }
     }
 }

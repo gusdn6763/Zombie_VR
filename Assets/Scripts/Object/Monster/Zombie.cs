@@ -50,15 +50,15 @@ public class Zombie : Mob
     {
         if (GameManager.instance.MyGameLevel == 2)
         {
-            speed = 1.5f;
-            hp = 4f;
-            damage = 2;
+            speed += 0.7f;
+            hp += 2f;
+            damage += 1;
         }
         else if (GameManager.instance.MyGameLevel == 3)
         {
-            speed = 2f;
-            hp = 6f;
-            damage = 3;
+            speed += 1.2f;
+            hp += 4f;
+            damage += 2;
             for (int i = 0; i < zombie_Parts.Count; i++)
             {
                 zombie_Parts[i].MyHp = (float)(hp / 3);

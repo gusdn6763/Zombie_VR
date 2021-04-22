@@ -11,28 +11,26 @@ public enum CharacterStatus
     ATTACK,
 }
 
-[RequireComponent(typeof(Animator), typeof(NavMeshAgent), typeof(Rigidbody))]
+[RequireComponent(typeof(Animator), typeof(NavMeshAgent), typeof(AudioClip))]
 public class Mob : MovingObject
 {
+    [SerializeField] private MonsterAttack[] monsterAttacks;
     [SerializeField] protected float viewRange = 45.0f;
     [SerializeField] protected float attackDist;
     [SerializeField] protected int damage;
     [SerializeField] protected bool isAttack;
 
-    private Rigidbody rigi;
     private NavMeshAgent agent;
     private AudioSource threatSound;
     protected Animator animator;
     protected Transform target;
 
     private float damping = 1.0f;       //회전할 때의 속도를 조절하는 계수
-    private bool soundPlaying = false;
     private bool startingMob = false;
     public CharacterStatus enemyStatus = CharacterStatus.IDLE;
 
     public virtual void Awake()
     {
-        rigi = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         threatSound = GetComponent<AudioSource>();
@@ -44,6 +42,7 @@ public class Mob : MovingObject
         currentHp = hp;
         agent.autoBraking = false;
         agent.updateRotation = false;
+        threatSound.Play();
     }
 
     public virtual void Update()
@@ -76,16 +75,17 @@ public class Mob : MovingObject
         while (true)
         {
             float dist = Vector3.Distance(target.position, transform.position);
-            if(dist <= 10 && threatSound.clip != null)
+            if (SoundManager.instance.soundIsOn)
             {
-                threatSound.volume = 1 - ((dist / 10) * SoundManager.instance.audioSourceEffects[0].volume);
-                if (!soundPlaying)
+                threatSound.mute = false;
+                if (dist <= 10)
                 {
-                    threatSound.Play();
-                    soundPlaying = true;
-                    yield return new WaitForSeconds(threatSound.clip.length);
-                    soundPlaying = false;
+                    threatSound.volume = ((1 / dist + 0.2f) * SoundManager.instance.audioSourceEffects[0].volume);
                 }
+            }
+            else
+            {
+                threatSound.mute = true;
             }
             if (dist <= attackDist && isViewPlayer())
             {
@@ -98,31 +98,6 @@ public class Mob : MovingObject
             yield return (0.3f);
         }
     }
-
-    public bool isViewPlayer()
-    {
-        bool isView = false;
-        RaycastHit hit;
-
-        //적 캐릭터와 주인공 사이의 방향 벡터를 계산
-        Vector3 dir = (target.position - transform.position).normalized;
-
-        //레이캐스트를 투사해서 장애물이 있는지 여부를 판단
-        if (Physics.Raycast(transform.position, dir, out hit, viewRange))
-        {
-            isView = (hit.collider.CompareTag(Constant.player));
-        }
-        return isView;
-    }
-
-    //주인공을 추적할 때 이동시키는 함수
-    void TraceTarget(Vector3 pos)
-    {
-        if (agent.isPathStale) return;
-        agent.destination = pos;
-        agent.isStopped = false;
-    }
-
     IEnumerator Action()
     {
         while (true)
@@ -154,6 +129,28 @@ public class Mob : MovingObject
         }
     }
 
+    public bool isViewPlayer()
+    {
+        bool isView = false;
+        RaycastHit hit;
+
+        //적 캐릭터와 주인공 사이의 방향 벡터를 계산
+        Vector3 dir = (target.position - transform.position).normalized;
+
+        //레이캐스트를 투사해서 장애물이 있는지 여부를 판단
+        if (Physics.Raycast(transform.position, dir, out hit, viewRange))
+        {
+            isView = (hit.collider.CompareTag(Constant.player));
+        }
+        return isView;
+    }
+    //주인공을 추적할 때 이동시키는 함수
+    void TraceTarget(Vector3 pos)
+    {
+        if (agent.isPathStale) return;
+        agent.destination = pos;
+        agent.isStopped = false;
+    }
     /// <summary>
     /// 순찰 및 추적을 정지시키는 함수
     /// </summary>
@@ -180,11 +177,20 @@ public class Mob : MovingObject
         Destroy(this.gameObject, 1f);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    public void Attacking()
     {
-        if (isAttack && collision.gameObject.CompareTag("Player"))
+        for(int i = 0; i < monsterAttacks.Length; i++)
         {
-            collision.gameObject.GetComponent<Player>().Damaged(damage);
+            monsterAttacks[i].attacking = true;
+            monsterAttacks[i].damage = damage;
+        }
+    }
+
+    public void Attacked()
+    {
+        for (int i = 0; i < monsterAttacks.Length; i++)
+        {
+            monsterAttacks[i].attacking = false;
         }
     }
 }

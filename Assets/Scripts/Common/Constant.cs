@@ -32,5 +32,6 @@
     public const string loadingScene = "LoadingScene";
     public const string secondScene = "SecondScene";
     public const string spawn = "Spawn";
+    public const string hitBox = "HitBox";
 }
 

@@ -8,10 +8,10 @@ TagManager:
   - Right
   - Monster
   - Part
-  - Warning
   - Weapon
   - Wall
   - Spawn
+  - HitBox
   layers:
   - Default
   - TransparentFX

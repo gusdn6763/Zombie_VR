@@ -9,7 +9,8 @@ public class Player : MovingObject
     public static Player instance;
 
     [SerializeField] private List<XRController> controllers = null;
-    [SerializeField] private Shake Dmgshake;
+    [SerializeField] private GameObject[] rays;
+    public Shake Dmgshake;
 
     private CharacterController characterController = null;     //VR Rig의 캐릭터 컨트롤러
     private GameObject head = null;                             //카메라 머리 위치
@@ -18,6 +19,8 @@ public class Player : MovingObject
 
     public float mass = 1f;
     public bool moveImpossible = false;
+    public bool rayCheck = true;
+    public bool touch = false;
 
     public void Awake()
     {
@@ -30,7 +33,6 @@ public class Player : MovingObject
             instance = this;
             DontDestroyOnLoad(this);
         }
-        Dmgshake = GetComponent<Shake>();
         characterController = GetComponent<CharacterController>();
         head = GetComponent<XRRig>().cameraGameObject;
     }
@@ -58,6 +60,10 @@ public class Player : MovingObject
             {
                 StartMove(position);
             }
+            if (controller.inputDevice.TryGetFeatureValue(CommonUsages.primary2DAxisClick, out touch) && touch)
+            {
+                Jump();
+            }
         }
     }
 
@@ -65,6 +71,17 @@ public class Player : MovingObject
     void StartMove(Vector2 position)
     {
         Vector3 direction = new Vector3(position.x, 0, position.y);
+        Vector3 headRotation = new Vector3(0, head.transform.eulerAngles.y, 0);
+
+        direction = Quaternion.Euler(headRotation) * direction;
+
+        Vector3 movement = direction * speed;
+        characterController.Move(movement * Time.deltaTime);
+    }
+
+    void Jump()
+    {
+        Vector3 direction = new Vector3(0, 5f, 0);
         Vector3 headRotation = new Vector3(0, head.transform.eulerAngles.y, 0);
 
         direction = Quaternion.Euler(headRotation) * direction;
@@ -101,6 +118,18 @@ public class Player : MovingObject
     {
         Vector3 movement = direction * speed;
         gameObject.transform.Translate(movement * Time.deltaTime);
+    }
+    
+    public void RayOnOff()
+    {
+        for(int i = 0; i < rays.Length; i++)
+        {
+            rays[i].SetActive(false);
+        }
+        for (int i = 0; i < rays.Length; i++)
+        {
+            rays[i].SetActive(rayCheck);
+        }
     }
 }
 

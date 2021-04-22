@@ -30,11 +30,13 @@ public class GameManager : MonoBehaviour
     private Transform[] spawnPoints = null;
     private Vector3 savePlayerPos;
     private Vector3 savePlayerRot;
-
+    public Light mylight;
     private int gameLevel;
     public int currentSceneLevel = 1;
     public string currenBgm;
+    public bool gameStarting = false;
     public bool isGameOver;
+    public SettingView settingView;
 
     public int MyGameLevel { get; set; }
 
@@ -53,26 +55,32 @@ public class GameManager : MonoBehaviour
         spawnPoints = spawnPoint.GetComponentsInChildren<Transform>();
     }
 
-    void Start()
-    {
-        ChooseLevel(2);
-    }
-
     public void ChooseLevel(int level)
     {
+        Player.instance.RayOnOff();
+        gameStarting = true;
         gameLevel = level;
+        spawnTime -= level;
         StartCoroutine(StartGame());
     }
 
     IEnumerator StartGame()
     {
+        Player.instance.RayOnOff();
         for (int i = 0; i < 10; i++)
         {
             ObjectPoolManager.instance.MakeGun();
             yield return new WaitForSeconds(1f);
             SoundManager.instance.PlaySE(Constant.countDown + (10 - i).ToString());
+            if (mylight != null)
+            {
+                mylight.intensity--;
+            }
+            if (i == 5)
+            {
+                StartCoroutine(CreateEnemy());
+            }
         }
-        StartCoroutine(CreateEnemy());
     }
 
     public IEnumerator CreateEnemy()
@@ -91,37 +99,26 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    ///// <summary>
-    ///// 후반 작업 예정
-    ///// </summary>
-    //public void ResetInfo()
-    //{
-    //    SoundManager.instance.bgmIsOn = true;
-    //    SoundManager.instance.soundIsOn = true;
-    //    SoundManager.instance.audioSourceBgm.volume = 1f;
-    //    SoundManager.instance.audioSourceEffects[0].volume = 1f;
-    //    PlayerPrefs.SetInt("FirstView", 1);
-    //    PlayerClearStage = 1;
-    //    player.currentMoney = 0;
-    //    player.ReserPlayer();
-    //    CallSave(true);
-    //}
-
     public void MoveStage(int moveStageLevel, Vector3 startPosition, Vector3 startRotation)
     {
+        Player.instance.moveImpossible = true;
         currentSceneLevel = moveStageLevel;
         StopAllCoroutines();
-        SceneManager.LoadScene(Constant.loadingScene);
         savePlayerPos = startPosition;
         savePlayerRot = startRotation;
+        SceneManager.LoadScene(Constant.loadingScene);
     }
     public void StartScene()
     {
-        Player.instance.transform.position = savePlayerPos;
-        Player.instance.transform.rotation = Quaternion.Euler(savePlayerRot.x, savePlayerRot.y, savePlayerRot.z);
-        Player.instance.moveImpossible = true;
+        gameStarting = false;
+        Player.instance.rayCheck = true;
+        Player.instance.RayOnOff();
         spawnPoint = GameObject.FindWithTag(Constant.spawn);
         spawnPoints = spawnPoint.GetComponentsInChildren<Transform>();
-        ChooseLevel(1);
+        settingView.gameObject.SetActive(true);
+        Player.instance.transform.position = savePlayerPos;
+        Player.instance.transform.rotation = Quaternion.Euler(savePlayerRot.x, savePlayerRot.y, savePlayerRot.z);
+        Player.instance.transform.position = savePlayerPos;
+        Player.instance.transform.rotation = Quaternion.Euler(savePlayerRot.x, savePlayerRot.y, savePlayerRot.z);
     }
 }

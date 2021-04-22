@@ -17,11 +17,9 @@ public class Weapon : XRGrabInteractable
 
     protected override void OnSelectEntering(SelectEnterEventArgs args)
     {
-        print(args.interactor);
         if (this.CompareTag(Constant.weapon) && (args.interactor.CompareTag(Constant.handLeft)
             || args.interactor.CompareTag(Constant.handRight)))
         {
-            print("a");
             args.interactor.GetComponentInChildren<CustomController>().GetWeapon(this);
         }
         if (args.interactor.CompareTag(Constant.handRight))
