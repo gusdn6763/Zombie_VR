@@ -13,22 +13,23 @@ public class Player : MovingObject
 
     private CharacterController characterController = null;     //VR Rig의 캐릭터 컨트롤러
     private GameObject head = null;                             //카메라 머리 위치
-
+    
     public HandState usingGrab;                                 //현재 사용하고있는 손
 
     public float mass = 1f;
+    public bool moveImpossible = false;
 
     public void Awake()
     {
-        if (instance == null)
+        if (instance != null)
+        {
+            Destroy(this.gameObject);
+        }
+        else
         {
             instance = this;
+            DontDestroyOnLoad(this);
         }
-        else if (instance != null)
-        {
-            Destroy(this);
-        }
-        DontDestroyOnLoad(this);
         Dmgshake = GetComponent<Shake>();
         characterController = GetComponent<CharacterController>();
         head = GetComponent<XRRig>().cameraGameObject;
@@ -53,7 +54,7 @@ public class Player : MovingObject
     {
         foreach(XRController controller in controllers)
         {
-            if (controller.inputDevice.TryGetFeatureValue(CommonUsages.primary2DAxis, out Vector2 position))
+            if (controller.inputDevice.TryGetFeatureValue(CommonUsages.primary2DAxis, out Vector2 position) && !moveImpossible)
             {
                 StartMove(position);
             }
@@ -94,6 +95,12 @@ public class Player : MovingObject
     {
         StopAllCoroutines();
         gameObject.SetActive(false);
+    }
+
+    public void Move(Vector3 direction, float speed)
+    {
+        Vector3 movement = direction * speed;
+        gameObject.transform.Translate(movement * Time.deltaTime);
     }
 }
 

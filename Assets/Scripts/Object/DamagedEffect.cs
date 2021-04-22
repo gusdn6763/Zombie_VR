@@ -14,7 +14,6 @@ public class DamagedEffect : MonoBehaviour
         bloodEffect = Resources.Load<GameObject>("BulletImpactFleshBigEffect");
     }
 
-
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag(Constant.weapon))

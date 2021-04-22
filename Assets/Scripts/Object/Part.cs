@@ -9,7 +9,10 @@ public class Part : MonoBehaviour
 
     public BoxCollider[] collObjects;
     public GameObject[] brokeObjects;
-    public Action<int, string> hpDelivery;
+
+    public Action<int> hpDelivery;
+    public Action<string> brokenPart;
+
     public string partName;
     public bool broken = false;
 
@@ -20,11 +23,11 @@ public class Part : MonoBehaviour
         hp -= damage;
         if (!broken)
         {
-            hpDelivery(damage, "");
+            hpDelivery(damage);
             if (hp <= 0)
             {
                 broken = true;
-                hpDelivery(0, partName);
+                brokenPart(partName);
                 for (int i = 0; i < brokeObjects.Length; i++)
                 {
                     Destroy(brokeObjects[i]);

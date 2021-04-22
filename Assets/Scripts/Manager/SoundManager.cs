@@ -21,7 +21,6 @@ public class SoundManager : MonoBehaviour
     public Sound[] effectSounds;
     public Sound[] bgmSounds;
 
-
     public bool soundIsOn = true;
     public bool bgmIsOn = true;
 

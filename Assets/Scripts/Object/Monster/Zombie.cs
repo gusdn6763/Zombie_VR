@@ -13,7 +13,8 @@ public class Zombie : Mob
         EnhanceMob();
         for (int i = 0; i < zombie_Parts.Count; i++)
         {
-            zombie_Parts[i].hpDelivery += partDamegaed;
+            zombie_Parts[i].hpDelivery += Damaged;
+            zombie_Parts[i].brokenPart += BrokenPart;
         }
         base.Start();
     }
@@ -27,10 +28,9 @@ public class Zombie : Mob
         }
     }
 
-    public void partDamegaed(int damage, string partName = "")
+    public void BrokenPart(string partName)
     {
-        base.Damaged(damage);
-        if (partName != "")
+        if (partName != "" && hp > 0)
         {
             if (partName == "Head")
             {
@@ -46,7 +46,6 @@ public class Zombie : Mob
             }
         }
     }
-
     public void EnhanceMob()
     {
         if (GameManager.instance.MyGameLevel == 2)

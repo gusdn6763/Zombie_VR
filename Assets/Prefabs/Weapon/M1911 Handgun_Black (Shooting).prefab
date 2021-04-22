@@ -401,7 +401,7 @@ GameObject:
   - component: {fileID: 923400835328147993}
   m_Layer: 0
   m_Name: M1911 Handgun_Black (Shooting)
-  m_TagString: Untagged
+  m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -578,7 +578,9 @@ MonoBehaviour:
   m_ForceGravityOnDetach: 0
   m_RetainTransformParent: 1
   leftAttachPos: {x: 0.02, y: 0.075, z: 0.06}
+  leftAttachrotation: {x: 0, y: 0, z: 0}
   rightAttachPos: {x: -0.02, y: 0.075, z: 0.06}
+  rightAttachrotation: {x: 0, y: 0, z: 0}
   damage: 1
   barrelLocation: {fileID: 923400834682522786}
   muzzleFlashPrefab: {fileID: 1782395880954752, guid: 3dd9cf2e209c504448f1c4c6835675cf, type: 3}

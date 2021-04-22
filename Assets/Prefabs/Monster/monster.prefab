@@ -1174,11 +1174,11 @@ GameObject:
   - component: {fileID: 5994027804305740825}
   - component: {fileID: 5994027804305740824}
   - component: {fileID: 5994027804305740839}
-  - component: {fileID: 5994027804305740838}
-  - component: {fileID: 5994027804305740837}
   - component: {fileID: 5994027804305740836}
   - component: {fileID: 5994027804305740835}
   - component: {fileID: 5994027804305740834}
+  - component: {fileID: 5994027804305740838}
+  - component: {fileID: 5994027804305740837}
   m_Layer: 0
   m_Name: monster
   m_TagString: Monster
@@ -1254,38 +1254,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &5994027804305740838
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5994027804305740833}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d706f8bd2f04c264db789613add3764e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hp: 3
-  currentHp: 0
-  speed: 0.5
-  viewRange: 45
-  attackDist: 1.5
-  damage: 1
-  isAttack: 0
-  enemyStatus: 0
---- !u!114 &5994027804305740837
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5994027804305740833}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 440e75943a8130f44abbe1bc234516cc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!82 &5994027804305740836
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1412,6 +1380,38 @@ CapsuleCollider:
   m_Height: 2.2
   m_Direction: 1
   m_Center: {x: 0, y: 1.1, z: 0}
+--- !u!114 &5994027804305740838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5994027804305740833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d706f8bd2f04c264db789613add3764e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hp: 3
+  currentHp: 0
+  speed: 0.5
+  viewRange: 45
+  attackDist: 1.5
+  damage: 1
+  isAttack: 0
+  enemyStatus: 0
+--- !u!114 &5994027804305740837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5994027804305740833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 440e75943a8130f44abbe1bc234516cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5994027804305854904
 GameObject:
   m_ObjectHideFlags: 0

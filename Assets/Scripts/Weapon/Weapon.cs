@@ -17,9 +17,11 @@ public class Weapon : XRGrabInteractable
 
     protected override void OnSelectEntering(SelectEnterEventArgs args)
     {
-        Debug.Log(typeof(Weapon).IsAssignableFrom(typeof(Gun)));
-        if (typeof(Weapon).IsAssignableFrom(typeof(Gun)))
+        print(args.interactor);
+        if (this.CompareTag(Constant.weapon) && (args.interactor.CompareTag(Constant.handLeft)
+            || args.interactor.CompareTag(Constant.handRight)))
         {
+            print("a");
             args.interactor.GetComponentInChildren<CustomController>().GetWeapon(this);
         }
         if (args.interactor.CompareTag(Constant.handRight))
@@ -34,11 +36,4 @@ public class Weapon : XRGrabInteractable
         }
         base.OnSelectEntering(args);
     }
-
-    public virtual void Attack()
-    {
-
-    }
-
-    
 }

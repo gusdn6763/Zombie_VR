@@ -29,5 +29,8 @@
     public const string arm = "Arm";
 
     public const string countDown = "CountDown";
+    public const string loadingScene = "LoadingScene";
+    public const string secondScene = "SecondScene";
+    public const string spawn = "Spawn";
 }
 

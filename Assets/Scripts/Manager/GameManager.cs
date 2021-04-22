@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public class Data
@@ -21,17 +22,19 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private Gun gun;
     [SerializeField] private List<Mob> mobs = new List<Mob>();
-    [SerializeField] private Transform spawnPoint;
-    [SerializeField] private int currrentMobCount;
-    [SerializeField] private int mobMaxCount;
+    [SerializeField] private int currrentMobCount = 0;
+    [SerializeField] private int mobMaxCount = 10;
     [SerializeField] private float spawnTime;
 
+    [SerializeField] private GameObject spawnPoint;
     private Transform[] spawnPoints = null;
+    private Vector3 savePlayerPos;
+    private Vector3 savePlayerRot;
 
     private int gameLevel;
+    public int currentSceneLevel = 1;
     public string currenBgm;
     public bool isGameOver;
-
 
     public int MyGameLevel { get; set; }
 
@@ -46,12 +49,13 @@ public class GameManager : MonoBehaviour
             Destroy(this);
         }
         DontDestroyOnLoad(this);
+        spawnPoint = GameObject.FindWithTag(Constant.spawn);
         spawnPoints = spawnPoint.GetComponentsInChildren<Transform>();
     }
 
     void Start()
     {
-        ChooseLevel(1);
+        ChooseLevel(2);
     }
 
     public void ChooseLevel(int level)
@@ -82,6 +86,7 @@ public class GameManager : MonoBehaviour
                 Mob mob = Instantiate(mobs[Random.Range(0, mobs.Count)], spawnPoints[idx].position, spawnPoints[idx].rotation);
                 mob.transform.SetParent(spawnPoints[idx]);
                 mob.transform.position = spawnPoints[idx].transform.position;
+                mob.StartingMob();
             }
         }
     }
@@ -102,6 +107,21 @@ public class GameManager : MonoBehaviour
     //    CallSave(true);
     //}
 
-
-
+    public void MoveStage(int moveStageLevel, Vector3 startPosition, Vector3 startRotation)
+    {
+        currentSceneLevel = moveStageLevel;
+        StopAllCoroutines();
+        SceneManager.LoadScene(Constant.loadingScene);
+        savePlayerPos = startPosition;
+        savePlayerRot = startRotation;
+    }
+    public void StartScene()
+    {
+        Player.instance.transform.position = savePlayerPos;
+        Player.instance.transform.rotation = Quaternion.Euler(savePlayerRot.x, savePlayerRot.y, savePlayerRot.z);
+        Player.instance.moveImpossible = true;
+        spawnPoint = GameObject.FindWithTag(Constant.spawn);
+        spawnPoints = spawnPoint.GetComponentsInChildren<Transform>();
+        ChooseLevel(1);
+    }
 }

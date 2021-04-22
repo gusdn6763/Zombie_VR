@@ -27,7 +27,8 @@ public class Mob : MovingObject
 
     private float damping = 1.0f;       //회전할 때의 속도를 조절하는 계수
     private bool soundPlaying = false;
-    public CharacterStatus enemyStatus;
+    private bool startingMob = false;
+    public CharacterStatus enemyStatus = CharacterStatus.IDLE;
 
     public virtual void Awake()
     {
@@ -48,7 +49,7 @@ public class Mob : MovingObject
     public virtual void Update()
     {
         //적 캐릭터가 이동 중일 때만 회전
-        if (agent.isStopped == false)
+        if (agent.isStopped == false && startingMob)
         {
             if (agent.desiredVelocity != Vector3.zero)
             {
@@ -61,7 +62,7 @@ public class Mob : MovingObject
         }
     }
 
-    private void OnEnable()
+    public void StartingMob()
     {
         StartCoroutine(CheckState());
         StartCoroutine(Action());
@@ -69,6 +70,7 @@ public class Mob : MovingObject
 
     IEnumerator CheckState()
     {
+        startingMob = true;
         yield return new WaitForSeconds(1.0f);
 
         while (true)
@@ -76,7 +78,7 @@ public class Mob : MovingObject
             float dist = Vector3.Distance(target.position, transform.position);
             if(dist <= 10 && threatSound.clip != null)
             {
-                threatSound.volume = 1 - (dist / 10);
+                threatSound.volume = 1 - ((dist / 10) * SoundManager.instance.audioSourceEffects[0].volume);
                 if (!soundPlaying)
                 {
                     threatSound.Play();

@@ -30,9 +30,10 @@ public class Gun : Weapon
         base.Awake();
         animator = GetComponent<Animator>();
         muzzleFlash = barrelLocation.GetComponentInChildren<ParticleSystem>();
+        interactionManager = FindObjectOfType<XRInteractionManager>();
     }
 
-    public override void Attack()
+    public void Attack()
     {
         if (!attackCheck)
         {

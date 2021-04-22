@@ -11,10 +11,10 @@ public class CustomController : MonoBehaviour
     private Animator handAnimator;
     private GameObject controllerInstance; //디바이스 오브젝트
     private GameObject handInstance;       //hand 오브젝트
-    private Weapon weapon;
+    private Gun currentGun;
 
-    private bool menuButtonValue;
-    private bool oneClicktriggerButtonCheck;
+    private bool menuButtonValue = false;
+    private bool oneClicktriggerButtonCheck = false;
 
     public HandState currentHand;
     public InputDeviceCharacteristics characteristics;    //사람들이 임의로 정의해준 디바이스 열거 넘버
@@ -43,11 +43,18 @@ public class CustomController : MonoBehaviour
         {
             UpdateHandAnimation();
         }
-        if (currentUsingDevice.TryGetFeatureValue(CommonUsages.triggerButton, out menuButtonValue) && menuButtonValue && weapon != null)
+        if (currentUsingDevice.TryGetFeatureValue(CommonUsages.triggerButton, out menuButtonValue) && menuButtonValue && currentGun != null)
         {
-            weapon.Attack();
+            if (oneClicktriggerButtonCheck)
+            {
+                currentGun.Attack();
+                oneClicktriggerButtonCheck = false;
+            }
         }
-
+        else
+        {
+            oneClicktriggerButtonCheck = true;
+        }
     }
 
     //바이브인지 오큘러스 리프트인지 확인하고 연결해주는 함수
@@ -147,16 +154,16 @@ public class CustomController : MonoBehaviour
         }
     }
 
-    public void GetWeapon(Weapon weapon)
+    public void GetWeapon(Weapon currentGun)
     {
-        if (weapon != null)
+        if (currentGun != null)
         {
-            this.weapon = weapon;
+            this.currentGun = (Gun)currentGun;
         }
     }
 
     public void DropWeapon()
     {
-        weapon = null;
+        currentGun = null;
     }
 }
