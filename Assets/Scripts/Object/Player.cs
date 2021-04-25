@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 
@@ -10,17 +11,15 @@ public class Player : MovingObject
 
     [SerializeField] private List<XRController> controllers = null;
     [SerializeField] private GameObject[] rays;
-    public Shake Dmgshake;
 
     private CharacterController characterController = null;     //VR Rig의 캐릭터 컨트롤러
     private GameObject head = null;                             //카메라 머리 위치
-    
-    public HandState usingGrab;                                 //현재 사용하고있는 손
+
+    public PlayerUI playerUi;                            
 
     public float mass = 1f;
     public bool moveImpossible = false;
     public bool rayCheck = true;
-    public bool touch = false;
 
     public void Awake()
     {
@@ -44,8 +43,11 @@ public class Player : MovingObject
 
     private void Update()
     {
-        CheckForInput();
-        ApplyGravity();
+        if (GameManager.instance.gameStarting)
+        {
+            CheckForInput();
+            ApplyGravity();
+        }
     }
 
 
@@ -59,10 +61,6 @@ public class Player : MovingObject
             if (controller.inputDevice.TryGetFeatureValue(CommonUsages.primary2DAxis, out Vector2 position) && !moveImpossible)
             {
                 StartMove(position);
-            }
-            if (controller.inputDevice.TryGetFeatureValue(CommonUsages.primary2DAxisClick, out touch) && touch)
-            {
-                Jump();
             }
         }
     }
@@ -104,32 +102,42 @@ public class Player : MovingObject
     /// <param name="damage"></param>
     public override void Damaged(int damage)
     {
-        StartCoroutine(Dmgshake.ShakeCamera());
         base.Damaged(damage);
+        if (playerUi.isActiveAndEnabled)
+        {
+            playerUi.UIReflectionHp(currentHp, hp);
+        }
     }
 
-    public void Dead()
+    public override void Die()
     {
-        StopAllCoroutines();
-        gameObject.SetActive(false);
+        if (!GameManager.instance.isGameOver)
+        {
+            base.Die();
+            playerUi.PlayerDieUI();
+            GameManager.instance.isGameOver = true;
+            SoundManager.instance.PlaySE(Constant.playerDieSound);
+        }
     }
 
-    public void Move(Vector3 direction, float speed)
+    public void RayOn()
     {
-        Vector3 movement = direction * speed;
-        gameObject.transform.Translate(movement * Time.deltaTime);
+        for (int i = 0; i < rays.Length; i++)
+        {
+            rays[i].SetActive(true);
+        }
     }
-    
-    public void RayOnOff()
+    public void RayOff()
     {
-        for(int i = 0; i < rays.Length; i++)
+        for (int i = 0; i < rays.Length; i++)
         {
             rays[i].SetActive(false);
         }
-        for (int i = 0; i < rays.Length; i++)
-        {
-            rays[i].SetActive(rayCheck);
-        }
+    }
+    public void PlayerMove(Vector3 direction, float speed)
+    {
+        Vector3 movement = direction * speed;
+        gameObject.transform.Translate(movement * Time.deltaTime);
     }
 }
 

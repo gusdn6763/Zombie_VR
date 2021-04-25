@@ -5,7 +5,8 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class Weapon : XRGrabInteractable
 {
-    private CustomController customController;
+    public HandState grapingHand;
+
     [Header("무기정보")]
     public Vector3 leftAttachPos;
     public Vector3 leftAttachrotation;
@@ -19,7 +20,7 @@ public class Weapon : XRGrabInteractable
     {
         if (this.CompareTag(Constant.weapon) && (args.interactor.CompareTag(Constant.handLeft)
             || args.interactor.CompareTag(Constant.handRight)))
-        {
+        {           
             args.interactor.GetComponentInChildren<CustomController>().GetWeapon(this);
         }
         if (args.interactor.CompareTag(Constant.handRight))
@@ -34,4 +35,18 @@ public class Weapon : XRGrabInteractable
         }
         base.OnSelectEntering(args);
     }
+
+    protected override void OnSelectExiting(SelectExitEventArgs args)
+    {
+        if (grapingHand == HandState.LEFT)
+        {
+            Player.instance.playerUi.UIReflectionlLeftBullet(0, 0);
+        }
+        else if (grapingHand == HandState.RIGHT)
+        {
+            Player.instance.playerUi.UIReflectionlRightBullet(0, 0);
+        }
+        base.OnSelectExiting(args);
+    }
+
 }

@@ -14,14 +14,20 @@ public class SoundManager : MonoBehaviour
 {
     public static SoundManager instance;
 
-    public AudioSource[] audioSourceEffects;
-    public AudioSource audioSourceBgm;
+    [Header("시작 브금 오디오 소스")]
+    [SerializeField] private AudioSource audioSourceBgm;
+    private AudioSource[] audioSourceEffects;
 
+    [Header("현재 틀고있는 노래")]
     public string[] playSoundName;
 
+    [Header("효과음")]
     public Sound[] effectSounds;
+    [Header("브금")]
     public Sound[] bgmSounds;
 
+    public float currentBgmVolume = 0.5f;
+    public float currentSoundVolume = 0.5f;
     public bool soundIsOn = true;
     public bool bgmIsOn = true;
 
@@ -53,9 +59,10 @@ public class SoundManager : MonoBehaviour
                     {
                         if (!audioSourceEffects[j].isPlaying)
                         {
- 
+                            
                             playSoundName[j] = effectSounds[i].name;
                             audioSourceEffects[j].clip = effectSounds[i].clip;
+                            audioSourceEffects[j].volume = currentSoundVolume;
                             audioSourceEffects[j].Play();
                             return;
                         }
@@ -69,9 +76,10 @@ public class SoundManager : MonoBehaviour
     }
     public void PlaySEVolume(float volume)
     {
+        currentSoundVolume = volume;
         for (int i = 0; i < playSoundName.Length - 1; i++)
         {
-            audioSourceEffects[i].volume = volume;
+            audioSourceEffects[i].volume = currentSoundVolume;
         }
     }
     public void StopSE(string _name)
@@ -115,14 +123,15 @@ public class SoundManager : MonoBehaviour
             }
         }
     }
+    public void PlayBgmVolume(float volume)
+    {
+        currentBgmVolume = volume;
+        audioSourceBgm.volume = currentBgmVolume;
+    }
 
     public void StopBgm()
     {
         audioSourceBgm.Stop();
     }
 
-    public void PlayBgmVolume(float volume)
-    {
-        audioSourceBgm.volume = volume;
-    }
 }

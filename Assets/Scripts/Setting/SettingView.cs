@@ -9,24 +9,21 @@ public class SettingView : MonoBehaviour
     [SerializeField] private Toggle soundOn;
     [SerializeField] private Slider musicVolume;
     [SerializeField] private Slider soundVolume;
-
-    [SerializeField] Toggle rayToggle;
+    [SerializeField] private Toggle rayToggle;
+    [SerializeField] private Toggle uiToggle;
 
     private void OnEnable()
     {
         musicOn.isOn = SoundManager.instance.bgmIsOn;
         soundOn.isOn = SoundManager.instance.soundIsOn;
-        musicVolume.value = SoundManager.instance.audioSourceBgm.volume;
-        soundVolume.value = SoundManager.instance.audioSourceEffects[0].volume;
-    }
-
-    public void RayToggle(bool isOn)
-    {
-        Player.instance.rayCheck = isOn;
+        musicVolume.value = SoundManager.instance.currentBgmVolume;
+        soundVolume.value = SoundManager.instance.currentSoundVolume;
+        rayToggle.isOn = Player.instance.rayCheck;
     }
 
     public void MusicOn(bool IsOn)
     {
+        print(IsOn);
         SoundManager.instance.bgmIsOn = IsOn;
         if (IsOn)
         {
@@ -37,6 +34,7 @@ public class SettingView : MonoBehaviour
             SoundManager.instance.StopBgm();
         }
     }
+
     public void MusicValue(float value)
     {
         SoundManager.instance.PlayBgmVolume(value);
@@ -48,5 +46,14 @@ public class SettingView : MonoBehaviour
     public void PlaySEVolume(float value)
     {
         SoundManager.instance.PlaySEVolume(value);
+    }
+    public void RayToggle(bool isOn)
+    {
+        Player.instance.rayCheck = isOn;
+    }
+
+    public void UiToggle(bool isOn)
+    {
+        Player.instance.playerUi.UiCheck = isOn;
     }
 }

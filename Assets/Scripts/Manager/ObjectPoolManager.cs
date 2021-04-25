@@ -6,8 +6,8 @@ public class ObjectPoolManager : MonoBehaviour
 {
     public static ObjectPoolManager instance;
 
-    public Gun gun;
     public List<BulletCtrl> bulletManager = new List<BulletCtrl>();
+    public Gun gun;
     public Transform bulletBox;
     public BulletCtrl bullet;
     public int bulletCount = 30;
@@ -50,6 +50,6 @@ public class ObjectPoolManager : MonoBehaviour
     /// </summary>
     public void MakeGun()
     {
-        Instantiate(gun, transform);
+        Instantiate(gun, transform.position, transform.rotation);
     }
 }

@@ -10,7 +10,6 @@ public class DamagedEffect : MonoBehaviour
 
     void Start()
     {
-        //Ç÷Èç È¿°ú ÇÁ¸®ÆÕÀ» ·Îµå
         bloodEffect = Resources.Load<GameObject>("BulletImpactFleshBigEffect");
     }
 

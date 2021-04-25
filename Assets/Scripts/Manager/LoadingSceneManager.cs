@@ -6,10 +6,12 @@ using UnityEngine.UI;
 
 public class LoadingSceneManager : MonoBehaviour
 {
+    [SerializeField] Canvas canvas;
     public Image progressBar;
 
     private void Start()
     {
+        canvas.worldCamera = Camera.main;
         StartCoroutine(LoadScene());
         progressBar.fillAmount = 0f;
     }

@@ -938,12 +938,7 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
-  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
-    are already bound by a Humanoid avatar. These transforms can only be changed
-    by Humanoid clips.\n\tTransform 'hip'\n\tTransform 'shoulder'\n\tTransform 'head'\n\tTransform
-    'L_ankle'\n\tTransform 'L_knee'\n\tTransform 'L_eye'\n\tTransform 'L_arm'\n\tTransform
-    'L_leg'\n\tTransform 'R_finger1'\n\tTransform 'R_foot'\n\tand more ...\n\tFrom
-    animation clip 'die'"
+  m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
@@ -981,7 +976,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 52e5aad6c184a9544ad9ad3986b1aac0, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1025,7 +1020,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -1109,7 +1104,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: 3
   currentHp: 0
-  speed: 0.5
+  speed: 1
   monsterAttacks:
   - {fileID: 213575037079018755}
   - {fileID: 213575037315982919}
@@ -1395,7 +1390,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5897980322427344013}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.4, y: 0.4, z: 0.4}
@@ -2170,7 +2165,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5897980323199190562}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.4, y: 0.4, z: 0.4}

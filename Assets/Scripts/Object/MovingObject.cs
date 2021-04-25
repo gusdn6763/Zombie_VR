@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class MovingObject : MonoBehaviour
 {
-    public float hp;
-    public float currentHp;
-    public float speed;
+    [SerializeField] protected float hp;
+    [SerializeField] protected float currentHp;
+    [SerializeField] protected float speed;
 
     public virtual void Damaged(int damage)
     {

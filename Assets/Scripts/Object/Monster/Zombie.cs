@@ -19,12 +19,12 @@ public class Zombie : Mob
         base.Start();
     }
 
-    public override void Update()
+    private void OnDestroy()
     {
-        base.Update();
-        if (enemyStatus == CharacterStatus.TRACE)
+        for (int i = 0; i < zombie_Parts.Count; i++)
         {
-            animator.SetFloat(Constant.speed, speed);
+            zombie_Parts[i].hpDelivery -= Damaged;
+            zombie_Parts[i].brokenPart -= BrokenPart;
         }
     }
 

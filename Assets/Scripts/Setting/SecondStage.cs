@@ -4,29 +4,21 @@ using UnityEngine;
 
 public class SecondStage : MonoBehaviour
 {
-    public SecondStage instance;
+    [SerializeField] private Transform movePoint;
+    private Transform[] movePoints;
 
-    [SerializeField] Canvas canvas;
+    public float moveSpeed;
 
-    private void Awake()
+
+    void Awake()
     {
-        if (instance != null)
-        {
-            Destroy(this.gameObject);
-        }
-        else
-        {
-            instance = this;
-            DontDestroyOnLoad(this);
-        }
+        movePoints = movePoint.GetComponentsInChildren<Transform>();
     }
 
-    public bool check = false;
     void Start()
     {
         GameManager.instance.StartScene();
-        ObjectPoolManager.instance.transform.position = new Vector3(-41f, 2f, 10f);
-        ObjectPoolManager.instance.transform.rotation = Quaternion.Euler(0, -85f, 0);
+        Player.instance.moveImpossible = true;
         StartCoroutine(Testing());
     }
 
@@ -36,14 +28,19 @@ public class SecondStage : MonoBehaviour
     {
         yield return new WaitUntil( () => GameManager.instance.gameStarting);
         yield return new WaitForSeconds(9f);
-        StartCoroutine(PlayerMove(2, new Vector3(0, 0, 1f)));
+        StartCoroutine(PlayerMove());
     }
 
-    public IEnumerator PlayerMove(int speed, Vector3 dir)
+    public IEnumerator PlayerMove()
     {
-        while (true)
+        int i = 1;
+        while (!GameManager.instance.isGameOver)
         {
-            Player.instance.Move(dir, speed);
+            Player.instance.transform.position = Vector3.MoveTowards(Player.instance.transform.position, movePoints[i].position, moveSpeed * Time.deltaTime);
+            if (Vector3.Distance(Player.instance.transform.position, movePoints[i].position) <= 0.3f)
+            {
+                i++;
+            }
             yield return null;
         }
     }

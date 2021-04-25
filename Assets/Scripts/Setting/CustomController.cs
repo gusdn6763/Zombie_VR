@@ -156,9 +156,11 @@ public class CustomController : MonoBehaviour
 
     public void GetWeapon(Weapon currentGun)
     {
-        if (currentGun != null)
+        if (this.currentGun == null && currentGun != null)
         {
             this.currentGun = (Gun)currentGun;
+            this.currentGun.grapingHand = currentHand;
+            this.currentGun.UpdateBulletText();
         }
     }
 

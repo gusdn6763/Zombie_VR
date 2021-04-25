@@ -8,22 +8,14 @@ public class Gun : Weapon
 {
     [Header("총")]
     [SerializeField] private Transform barrelLocation;
+    [SerializeField] private int maxBullet = 10;
+    [SerializeField] private int remainingBullet = 10;
+    [SerializeField] private float reloadTime = 2.0f;
+    [SerializeField] private float delayTime = 0f;
+    [SerializeField] private bool isReloading = false;
 
     private ParticleSystem muzzleFlash;
     protected Animator animator;
-    public GameObject muzzleFlashPrefab;
-
-    //최대 총알 수
-    public int maxBullet = 10;
-    //남은 총알 수
-    public int remainingBullet = 10;
-    //재장전 시간
-    public float reloadTime = 2.0f;
-    //총 발사 딜레이
-    public float delayTime = 0f;
-    //총 발사 여부
-    //재장전 여부를 판단할 변수
-    private bool isReloading = false;
 
     protected override void Awake()
     {
@@ -46,8 +38,8 @@ public class Gun : Weapon
         if (!isReloading)
         {
             --remainingBullet;
+            UpdateBulletText();
             animator.SetTrigger(Constant.fire);
-
             if (remainingBullet == 0)
             {
                 StartCoroutine(Reloading());
@@ -56,14 +48,15 @@ public class Gun : Weapon
         yield return new WaitForSeconds(delayTime);
         attackCheck = false;
     }
+
     IEnumerator Reloading()
     {
-        SoundManager.instance.PlaySE("Reloading");
+        SoundManager.instance.PlaySE(Constant.reloading);
         isReloading = true;
         yield return new WaitForSeconds(reloadTime);
         isReloading = false;
         remainingBullet = maxBullet;
-        //UpdateBulletText();
+        UpdateBulletText();
     }
 
     /// <summary>
@@ -87,14 +80,27 @@ public class Gun : Weapon
             BulletActive(ObjectPoolManager.instance.bulletManager[i]);
             break;
         }
+
     }
 
     public void BulletActive(BulletCtrl bullet)
     {
         muzzleFlash.Play();
-        SoundManager.instance.PlaySE("Shoot");
+        SoundManager.instance.PlaySE(Constant.shoot);
         bullet.barrelLocation = barrelLocation;
         bullet.damage = damage;
         bullet.gameObject.SetActive(true);
+    }
+
+    public void UpdateBulletText()
+    {
+        if (grapingHand == HandState.LEFT)
+        {
+            Player.instance.playerUi.UIReflectionlLeftBullet(remainingBullet, maxBullet);
+        }
+        else if (grapingHand == HandState.RIGHT)
+        {
+            Player.instance.playerUi.UIReflectionlRightBullet(remainingBullet, maxBullet);
+        }
     }
 }

@@ -11,7 +11,7 @@ public enum CharacterStatus
     ATTACK,
 }
 
-[RequireComponent(typeof(Animator), typeof(NavMeshAgent), typeof(AudioClip))]
+[RequireComponent(typeof(Animator), typeof(NavMeshAgent), typeof(AudioSource))]
 public class Mob : MovingObject
 {
     [SerializeField] private MonsterAttack[] monsterAttacks;
@@ -27,7 +27,7 @@ public class Mob : MovingObject
 
     private float damping = 1.0f;       //회전할 때의 속도를 조절하는 계수
     private bool startingMob = false;
-    public CharacterStatus enemyStatus = CharacterStatus.IDLE;
+    [SerializeField] protected CharacterStatus enemyStatus = CharacterStatus.IDLE;
 
     public virtual void Awake()
     {
@@ -65,6 +65,15 @@ public class Mob : MovingObject
     {
         StartCoroutine(CheckState());
         StartCoroutine(Action());
+        if (SoundManager.instance.soundIsOn)
+        {
+            threatSound.mute = false;
+            threatSound.volume = SoundManager.instance.currentSoundVolume;
+        }
+        else
+        {
+            threatSound.mute = true;
+        }
     }
 
     IEnumerator CheckState()
@@ -75,18 +84,6 @@ public class Mob : MovingObject
         while (true)
         {
             float dist = Vector3.Distance(target.position, transform.position);
-            if (SoundManager.instance.soundIsOn)
-            {
-                threatSound.mute = false;
-                if (dist <= 10)
-                {
-                    threatSound.volume = ((1 / dist + 0.2f) * SoundManager.instance.audioSourceEffects[0].volume);
-                }
-            }
-            else
-            {
-                threatSound.mute = true;
-            }
             if (dist <= attackDist && isViewPlayer())
             {
                 enemyStatus = CharacterStatus.ATTACK;
@@ -115,9 +112,11 @@ public class Mob : MovingObject
                     damping = 7.0f;
                     TraceTarget(target.position);
                     animator.SetBool(Constant.move, true);
+                    animator.SetFloat(Constant.speed, speed);
                     break;
                 case CharacterStatus.ATTACK:
-                    Stop();
+                    agent.isStopped = true;
+                    agent.velocity = Vector3.zero;
                     animator.SetBool(Constant.move, false);
                     if (isAttack == false)
                     {
@@ -138,43 +137,19 @@ public class Mob : MovingObject
         Vector3 dir = (target.position - transform.position).normalized;
 
         //레이캐스트를 투사해서 장애물이 있는지 여부를 판단
-        if (Physics.Raycast(transform.position, dir, out hit, viewRange))
+        if (Physics.Raycast(transform.position, dir, out hit, viewRange,1 << 3))
         {
             isView = (hit.collider.CompareTag(Constant.player));
         }
         return isView;
     }
+
     //주인공을 추적할 때 이동시키는 함수
     void TraceTarget(Vector3 pos)
     {
         if (agent.isPathStale) return;
         agent.destination = pos;
         agent.isStopped = false;
-    }
-    /// <summary>
-    /// 순찰 및 추적을 정지시키는 함수
-    /// </summary>
-    public void Stop()
-    {
-        agent.isStopped = true;
-        agent.velocity = Vector3.zero;
-    }
-
-    public override void Die()
-    {
-        base.Die();
-        gameObject.tag = "Untagged";
-        isAttack = false;
-        Stop();
-        animator.SetTrigger(Constant.die);
-    }
-
-    /// <summary>
-    /// 애니메이션에서 실행
-    /// </summary>
-    public virtual void Dead()              
-    {
-        Destroy(this.gameObject, 1f);
     }
 
     public void Attacking()
@@ -193,5 +168,24 @@ public class Mob : MovingObject
             monsterAttacks[i].attacking = false;
         }
     }
+
+    public override void Die()
+    {
+        base.Die();
+        gameObject.tag = "Untagged";
+        isAttack = false;
+        agent.isStopped = true;
+        agent.velocity = Vector3.zero;
+        animator.SetTrigger(Constant.die);
+    }
+
+    /// <summary>
+    /// 애니메이션에서 실행
+    /// </summary>
+    public void Dead()
+    {
+        Destroy(this.gameObject, 1f);
+    }
+
 }
 
