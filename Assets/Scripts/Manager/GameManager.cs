@@ -106,7 +106,7 @@ public class GameManager : MonoBehaviour
 
         Player.instance.transform.position = savePlayerPos;
         Player.instance.transform.rotation = Quaternion.Euler(savePlayerRot.x, savePlayerRot.y, savePlayerRot.z);
-        ObjectPoolManager.instance.transform.position = new Vector3(savePlayerPos.x - 1, savePlayerPos.y + 2, savePlayerPos.z);
-        ObjectPoolManager.instance.transform.rotation = Quaternion.Euler(0, savePlayerRot.y + 95f, 0);
+        ObjectPoolManager.instance.transform.position = new Vector3(savePlayerPos.x + 1.5f, savePlayerPos.y + 0.5f, savePlayerPos.z + 1);
+        ObjectPoolManager.instance.transform.rotation = Quaternion.Euler(savePlayerRot.x, savePlayerRot.y, savePlayerRot.z);
     }
 }

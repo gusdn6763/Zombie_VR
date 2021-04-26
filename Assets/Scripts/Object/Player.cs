@@ -58,7 +58,7 @@ public class Player : MovingObject
     {
         foreach(XRController controller in controllers)
         {
-            if (controller.inputDevice.TryGetFeatureValue(CommonUsages.primary2DAxis, out Vector2 position) && !moveImpossible)
+            if (controller.inputDevice.TryGetFeatureValue(CommonUsages.primary2DAxis, out Vector2 position))
             {
                 StartMove(position);
             }

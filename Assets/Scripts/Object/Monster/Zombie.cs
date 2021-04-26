@@ -17,6 +17,7 @@ public class Zombie : Mob
             zombie_Parts[i].brokenPart += BrokenPart;
         }
         base.Start();
+        StartingMob();
     }
 
     private void OnDestroy()

@@ -46,12 +46,8 @@ public class BulletCtrl : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag(Constant.zombiePart))
-        {
-            collision.gameObject.GetComponent<Part>().Damaged(damage);
-            gameObject.SetActive(false);
-        }
-        else if (collision.gameObject.CompareTag(Constant.monster))
+        print(collision.gameObject.name);
+        if (collision.gameObject.CompareTag(Constant.monster))
         {
             collision.gameObject.GetComponent<Mob>().Damaged(damage);
             gameObject.SetActive(false);

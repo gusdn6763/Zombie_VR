@@ -23,7 +23,6 @@ public class SettingView : MonoBehaviour
 
     public void MusicOn(bool IsOn)
     {
-        print(IsOn);
         SoundManager.instance.bgmIsOn = IsOn;
         if (IsOn)
         {

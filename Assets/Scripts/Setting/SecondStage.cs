@@ -18,7 +18,6 @@ public class SecondStage : MonoBehaviour
     void Start()
     {
         GameManager.instance.StartScene();
-        Player.instance.moveImpossible = true;
         StartCoroutine(Testing());
     }
 
@@ -37,7 +36,7 @@ public class SecondStage : MonoBehaviour
         while (!GameManager.instance.isGameOver)
         {
             Player.instance.transform.position = Vector3.MoveTowards(Player.instance.transform.position, movePoints[i].position, moveSpeed * Time.deltaTime);
-            if (Vector3.Distance(Player.instance.transform.position, movePoints[i].position) <= 0.3f)
+            if (Vector3.Distance(Player.instance.transform.position, movePoints[i].position) <= 1f)
             {
                 i++;
             }

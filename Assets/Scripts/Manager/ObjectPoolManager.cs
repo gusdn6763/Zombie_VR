@@ -50,6 +50,6 @@ public class ObjectPoolManager : MonoBehaviour
     /// </summary>
     public void MakeGun()
     {
-        Instantiate(gun, transform.position, transform.rotation);
+        Instantiate(gun, new Vector3(transform.position.x, transform.position.y + 2, transform.position.z), transform.rotation);
     }
 }
