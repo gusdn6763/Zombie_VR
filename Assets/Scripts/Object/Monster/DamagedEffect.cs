@@ -13,13 +13,15 @@ public class DamagedEffect : MonoBehaviour
         bloodEffect = Resources.Load<GameObject>("BulletImpactFleshBigEffect");
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag(Constant.weapon))
-        {
-            ShowBloodEffect(collision);
-        }
-    }
+
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    if (collision.gameObject.CompareTag(Constant.weapon))
+    //    {
+    //        ShowBloodEffect(collision);
+    //    }
+    //}
+
 
     //혈흔 효과를 생성하는 함수
     void ShowBloodEffect(Collision coll)
@@ -32,6 +34,18 @@ public class DamagedEffect : MonoBehaviour
         Quaternion rot = Quaternion.FromToRotation(-Vector3.forward, _normal);
         //혈흔 효과 생성
         GameObject blood = Instantiate<GameObject>(bloodEffect, pos, rot);
+        Destroy(blood, 1.0f);
+    }
+
+    public void ShowBloodEffectBullet(Vector3 coll)
+    {
+        print(coll);
+        //총알의 충돌했을 때의 법선 벡터
+        Vector3 _normal = coll.normalized;
+        //총알의 충돌 시 방향 벡터의 회전값 계산
+        Quaternion rot = Quaternion.FromToRotation(-Vector3.forward, _normal);
+        //혈흔 효과 생성
+        GameObject blood = Instantiate<GameObject>(bloodEffect, coll, rot);
         Destroy(blood, 1.0f);
     }
 }

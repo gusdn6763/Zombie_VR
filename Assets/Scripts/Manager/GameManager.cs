@@ -48,7 +48,14 @@ public class GameManager : MonoBehaviour
         gameStarting = true;
         MyGameLevel = level;
         spawnTime -= level;
-        Player.instance.RayOff();
+        if (Player.instance.rayCheck)
+        {
+            Player.instance.RayOn();
+        }
+        else
+        {
+            Player.instance.RayOff();
+        }
         StartCoroutine(StartGame());
     }
 
@@ -61,10 +68,6 @@ public class GameManager : MonoBehaviour
             SoundManager.instance.PlaySE(Constant.countDown + (10 - i).ToString());
             if (i == 5)
             {
-                if (Player.instance.rayCheck)
-                {
-                    Player.instance.RayOn();
-                }
                 StartCoroutine(CreateEnemy());
             }
         }

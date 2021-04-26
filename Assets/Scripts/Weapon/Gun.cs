@@ -92,6 +92,19 @@ public class Gun : Weapon
         bullet.gameObject.SetActive(true);
     }
 
+    protected override void OnSelectExiting(SelectExitEventArgs args)
+    {
+        if (grapingHand == HandState.LEFT)
+        {
+            Player.instance.playerUi.UIReflectionlLeftBullet(0, 0);
+        }
+        else if (grapingHand == HandState.RIGHT)
+        {
+            Player.instance.playerUi.UIReflectionlRightBullet(0, 0);
+        }
+        base.OnSelectExiting(args);
+    }
+
     public void UpdateBulletText()
     {
         if (grapingHand == HandState.LEFT)

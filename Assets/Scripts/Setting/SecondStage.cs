@@ -17,6 +17,7 @@ public class SecondStage : MonoBehaviour
 
     void Start()
     {
+        Player.instance.moveImpossible = true;
         GameManager.instance.StartScene();
         StartCoroutine(Testing());
     }

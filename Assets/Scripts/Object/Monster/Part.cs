@@ -10,7 +10,7 @@ public class Part : MonoBehaviour
     public BoxCollider[] collObjects;
     public GameObject[] brokeObjects;
 
-    public Action<int> hpDelivery;
+    public Action<int, Vector3> hpDelivery;
     public Action<string> brokenPart;
 
     public string partName;
@@ -18,12 +18,14 @@ public class Part : MonoBehaviour
 
     public float MyHp { get; set; }
 
-    public void Damaged(int damage)
+
+    public void Damaged(int damage, Vector3 position)
     {
         hp -= damage;
         if (!broken)
         {
-            hpDelivery(damage);
+            hpDelivery(damage, position);
+ 
             if (hp <= 0)
             {
                 broken = true;

@@ -17,7 +17,6 @@ public class Zombie : Mob
             zombie_Parts[i].brokenPart += BrokenPart;
         }
         base.Start();
-        StartingMob();
     }
 
     private void OnDestroy()
@@ -35,7 +34,7 @@ public class Zombie : Mob
         {
             if (partName == "Head")
             {
-                Damaged(100);
+                Damaged(100, new Vector3(0,0,0));
             }
             else if (partName == "Leg")
             {

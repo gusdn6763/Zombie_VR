@@ -17,9 +17,9 @@ public class Prog : Mob
         EnhanceMob();
         base.Start();
     }
-    public override void Damaged(int damage)
+    public override void Damaged(int damage, Vector3 positon)
     {
-        base.Damaged(damage);
+        base.Damaged(damage, positon);
         animator.SetTrigger(Constant.hit);
     }
 

@@ -11,7 +11,7 @@ public class CustomController : MonoBehaviour
     private Animator handAnimator;
     private GameObject controllerInstance; //디바이스 오브젝트
     private GameObject handInstance;       //hand 오브젝트
-    private Gun currentGun;
+    private Gun currentWeapon;
 
     private bool menuButtonValue = false;
     private bool oneClicktriggerButtonCheck = false;
@@ -43,11 +43,11 @@ public class CustomController : MonoBehaviour
         {
             UpdateHandAnimation();
         }
-        if (currentUsingDevice.TryGetFeatureValue(CommonUsages.triggerButton, out menuButtonValue) && menuButtonValue && currentGun != null)
+        if (currentUsingDevice.TryGetFeatureValue(CommonUsages.triggerButton, out menuButtonValue) && menuButtonValue && currentWeapon != null)
         {
             if (oneClicktriggerButtonCheck)
             {
-                currentGun.Attack();
+                currentWeapon.Attack();
                 oneClicktriggerButtonCheck = false;
             }
         }
@@ -156,16 +156,16 @@ public class CustomController : MonoBehaviour
 
     public void GetWeapon(Weapon currentGun)
     {
-        if (this.currentGun == null && currentGun != null)
+        if (currentGun != null)
         {
-            this.currentGun = (Gun)currentGun;
-            this.currentGun.grapingHand = currentHand;
-            this.currentGun.UpdateBulletText();
+            this.currentWeapon = (Gun)currentGun;
+            this.currentWeapon.grapingHand = currentHand;
+            this.currentWeapon.UpdateBulletText();
         }
     }
 
     public void DropWeapon()
     {
-        currentGun = null;
+        currentWeapon = null;
     }
 }

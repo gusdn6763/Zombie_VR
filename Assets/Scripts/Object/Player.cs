@@ -45,7 +45,10 @@ public class Player : MovingObject
     {
         if (GameManager.instance.gameStarting)
         {
-            CheckForInput();
+            if (!moveImpossible)
+            {
+                CheckForInput();
+            }
             ApplyGravity();
         }
     }
@@ -100,9 +103,14 @@ public class Player : MovingObject
     /// 데미지 공격받을시
     /// </summary>
     /// <param name="damage"></param>
-    public override void Damaged(int damage)
+
+    public void Damaged(int damage)
     {
-        base.Damaged(damage);
+        currentHp -= damage;
+        if (currentHp <= 0)
+        {
+            Die();
+        }
         if (playerUi.isActiveAndEnabled)
         {
             playerUi.UIReflectionHp(currentHp, hp);

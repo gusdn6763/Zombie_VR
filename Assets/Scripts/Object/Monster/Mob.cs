@@ -24,6 +24,8 @@ public class Mob : MovingObject
     private AudioSource threatSound;
     protected Animator animator;
     protected Transform target;
+    private GameObject bloodEffect;
+
 
     private float damping = 1.0f;       //회전할 때의 속도를 조절하는 계수
     private bool startingMob = false;
@@ -43,6 +45,7 @@ public class Mob : MovingObject
         agent.autoBraking = false;
         agent.updateRotation = false;
         threatSound.Play();
+        bloodEffect = Resources.Load<GameObject>("BulletImpactFleshBigEffect");
     }
 
     public virtual void Update()
@@ -61,6 +64,21 @@ public class Mob : MovingObject
         }
     }
 
+    public void ShowBloodEffectBullet(Vector3 coll)
+    {
+        if (coll == Vector3.zero)
+        {
+            return ;
+        }
+        //총알의 충돌했을 때의 법선 벡터
+        Vector3 _normal = coll.normalized;
+        //총알의 충돌 시 방향 벡터의 회전값 계산
+        Quaternion rot = Quaternion.FromToRotation(-Vector3.forward, _normal);
+        //혈흔 효과 생성
+        GameObject blood = Instantiate<GameObject>(bloodEffect, coll, rot);
+        Destroy(blood, 1.0f);
+    }
+
     public void StartingMob()
     {
         StartCoroutine(CheckState());
@@ -73,6 +91,16 @@ public class Mob : MovingObject
         else
         {
             threatSound.mute = true;
+        }
+    }
+
+    public virtual void Damaged(int damage, Vector3 position)
+    {
+        currentHp -= damage;
+        ShowBloodEffectBullet(position);
+        if (currentHp <= 0)
+        {
+            Die();
         }
     }
 

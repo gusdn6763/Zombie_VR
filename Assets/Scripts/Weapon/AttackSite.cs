@@ -8,18 +8,13 @@ public class AttackSite : MonoBehaviour
     private bool attackCheck = false;
     public int damage;
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
         if (!attackCheck)
         {
-            attackCheck = true;
-            if (collision.gameObject.CompareTag(Constant.monster))
+            if (other.CompareTag(Constant.zombiePart))
             {
-                collision.gameObject.GetComponent<MovingObject>().Damaged(damage);
-            }
-            else if (collision.gameObject.CompareTag(Constant.zombiePart))
-            {
-                collision.gameObject.GetComponent<Part>().Damaged(damage);
+                other.GetComponent<Part>().Damaged(damage, transform.position);
             }
         }
     }
