@@ -1,36 +1,44 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(CapsuleCollider))]
-public class BulletCtrl : MonoBehaviour
+public class Arrow : MonoBehaviour
 {
     private Rigidbody rigi;
     private TrailRenderer trailRenderer;
 
-    public Transform barrelLocation;
+    [HideInInspector] public Transform shotPos;
     public float shotPower;
     public int damage;
+    public bool shot = false;
 
     private void Awake()
     {
         rigi = GetComponent<Rigidbody>();
         trailRenderer = GetComponent<TrailRenderer>();
     }
-    private void OnEnable()
+
+    private void Update()
     {
-        if (barrelLocation != null)
+        if (!shot)
         {
-            transform.position = barrelLocation.position;
-            transform.rotation = barrelLocation.rotation;
-            rigi.AddForce(barrelLocation.forward * shotPower);
-            
-            StartCoroutine(BulletDisable());
+            transform.position = shotPos.position;
+            transform.rotation = shotPos.rotation;
         }
+    }
+
+    public void ArrowShoot(int damage)
+    {
+        shot = true;
+        transform.LookAt(Player.instance.transform);
+        rigi.AddForce(transform.forward * shotPower);
+        StartCoroutine(BulletDisable());
+        
     }
 
     private void OnDisable()
     {
+        shot = false;
         trailRenderer.Clear();
         transform.position = Vector3.zero;
         transform.rotation = Quaternion.identity;
@@ -44,25 +52,13 @@ public class BulletCtrl : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag(Constant.zombiePart))
-        {
-            other.GetComponent<Part>().Damaged(damage, transform.position);
-        }
-    }
-
     private void OnCollisionEnter(Collision collision)
     {
-   
-        if (collision.gameObject.CompareTag(Constant.monster))
-        {
-            collision.gameObject.GetComponent<Mob>().Damaged(damage, transform.position);
-            gameObject.SetActive(false);
-        }
-        else if (collision.gameObject.CompareTag(Constant.zombiePart))
-        {
 
+        if (collision.gameObject.CompareTag(Constant.player))
+        {
+            collision.gameObject.GetComponent<Player>().Damaged(damage);
+            gameObject.SetActive(false);
         }
         else
         {

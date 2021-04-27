@@ -6,27 +6,29 @@ public class GoblinRanger : Mob
 {
     private CapsuleCollider capsuleCollider;
 
-    [SerializeField] private GameObject arrow;
+    [SerializeField] private Arrow arrow;
     [SerializeField] private Transform arrowPos;
-    Animation test;
+    [SerializeField] private Transform[] points;
+
+    private Arrow grabingArrow;
 
     public override void Awake()
     {        
         base.Awake();
         capsuleCollider = GetComponent<CapsuleCollider>();
     }
-
     public override void Start()
     {
-        EnhanceMob();
         base.Start();
+        EnhanceMob();
+        StartingMob();
     }
+
     public override void Damaged(int damage, Vector3 positon)
     {
         base.Damaged(damage, positon);
         animator.SetTrigger(Constant.hit);
     }
-
     public override void Die()
     {
         base.Die();
@@ -49,8 +51,51 @@ public class GoblinRanger : Mob
         speed += UnityEngine.Random.Range(0.0f, 0.5f);
     }
 
+    public void MakeArrow()
+    {
+        if (grabingArrow == null)
+        {
+            grabingArrow = Instantiate(arrow, arrowPos.position, arrowPos.rotation, arrowPos);
+            grabingArrow.shotPos = arrowPos;
+        }
+    }
+
+    /// <summary>
+    /// 애니메이션
+    /// </summary>
     public void ShootArrow()
     {
-        Instantiate(arrow, arrowPos.position, arrowPos.rotation);
+        grabingArrow.ArrowShoot(damage);
+    }
+    public void MoveToPoint()
+    {
+        if (points.Length != 0)
+        {
+            StopAllCoroutines();
+            StartCoroutine(MoveToPointCoroutine());
+        }
+    }
+    public IEnumerator MoveToPointCoroutine()
+    {
+        isAttack = false;
+        int i = points.Length;
+        bool test = false;
+        while (!test)
+        {
+            animator.SetBool(Constant.attack, isAttack);
+            transform.position = Vector3.MoveTowards(transform.position,
+                points[i].position, 1 * Time.deltaTime);
+            if (Vector3.Distance(transform.position, points[i].position) <= 1f)
+            {
+                StartingMob();
+                test = false;
+                i--;
+                if (i == 0)
+                {
+                    i = points.Length;
+                }
+            }
+            yield return null;
+        }
     }
 }

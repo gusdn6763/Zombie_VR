@@ -20,8 +20,8 @@ public class Mob : MovingObject
     [SerializeField] protected int damage;
     [SerializeField] protected bool isAttack;
 
-    private NavMeshAgent agent;
     private AudioSource threatSound;
+    protected NavMeshAgent agent;
     protected Animator animator;
     protected Transform target;
     private GameObject bloodEffect;
@@ -50,6 +50,7 @@ public class Mob : MovingObject
 
     public virtual void Update()
     {
+
         //적 캐릭터가 이동 중일 때만 회전
         if (agent.isStopped == false && startingMob)
         {
@@ -167,6 +168,7 @@ public class Mob : MovingObject
         //레이캐스트를 투사해서 장애물이 있는지 여부를 판단
         if (Physics.Raycast(transform.position, dir, out hit, viewRange,1 << 3))
         {
+            
             isView = (hit.collider.CompareTag(Constant.player));
         }
         return isView;

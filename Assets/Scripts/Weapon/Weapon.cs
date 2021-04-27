@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
+
 public class Weapon : XRGrabInteractable
 {
     public HandState grapingHand;

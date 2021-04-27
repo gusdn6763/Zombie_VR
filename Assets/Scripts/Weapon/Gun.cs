@@ -80,8 +80,8 @@ public class Gun : Weapon
             BulletActive(ObjectPoolManager.instance.bulletManager[i]);
             break;
         }
-
     }
+
 
     public void BulletActive(BulletCtrl bullet)
     {
