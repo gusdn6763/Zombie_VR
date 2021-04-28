@@ -119,6 +119,7 @@ public class Mob : MovingObject
             }
             else
             {
+                print(dist <= attackDist);
                 enemyStatus = CharacterStatus.TRACE;
             }
             yield return (0.3f);
@@ -163,8 +164,7 @@ public class Mob : MovingObject
         RaycastHit hit;
 
         //적 캐릭터와 주인공 사이의 방향 벡터를 계산
-        Vector3 dir = (target.position - transform.position).normalized;
-
+        Vector3 dir = (target.position - transform.position);
         //레이캐스트를 투사해서 장애물이 있는지 여부를 판단
         if (Physics.Raycast(transform.position, dir, out hit, viewRange,1 << 3))
         {

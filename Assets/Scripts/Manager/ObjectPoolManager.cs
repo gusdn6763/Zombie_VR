@@ -7,11 +7,9 @@ public class ObjectPoolManager : MonoBehaviour
     public static ObjectPoolManager instance;
 
     public List<BulletCtrl> bulletManager = new List<BulletCtrl>();
-    public List<Arrow> arrowManager = new List<Arrow>();
     public Gun gun;
     public Transform bulletBox;
     public BulletCtrl bullet;
-    public Arrow arrow;
     public int bulletCount = 30;
 
     private void Awake()
@@ -44,17 +42,6 @@ public class ObjectPoolManager : MonoBehaviour
             bulletManager.Add(bulletTmp);
             bulletTmp.transform.name = "Bullet" + i.ToString();
             bulletTmp.gameObject.SetActive(false);
-        }
-    }
-
-    public void InstanceArrow(float arrowCount = 0)
-    {
-        for (int i = 0; i < bulletCount; i++)
-        {
-            Arrow arrowTmp = Instantiate(arrow, bulletBox);
-            arrowManager.Add(arrowTmp);
-            arrowTmp.transform.name = "Arrow" + i.ToString();
-            arrowTmp.gameObject.SetActive(false);
         }
     }
 

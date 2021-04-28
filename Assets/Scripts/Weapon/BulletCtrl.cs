@@ -40,7 +40,7 @@ public class BulletCtrl : MonoBehaviour
 
     IEnumerator BulletDisable()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(5f);
         gameObject.SetActive(false);
     }
 
@@ -68,10 +68,5 @@ public class BulletCtrl : MonoBehaviour
         {
             gameObject.SetActive(false);
         }
-    }
-
-    public void Shot()
-    {
-        throw new System.NotImplementedException();
     }
 }

@@ -6,11 +6,12 @@ public class GoblinRanger : Mob
 {
     private CapsuleCollider capsuleCollider;
 
-    [SerializeField] private Arrow arrow;
     [SerializeField] private Transform arrowPos;
+    [SerializeField] private Transform arrowLeftPos;
     [SerializeField] private Transform[] points;
 
-    private Arrow grabingArrow;
+    [SerializeField] private Arrow[] grabingArrows;
+    private Arrow currentArrow;
 
     public override void Awake()
     {        
@@ -22,6 +23,25 @@ public class GoblinRanger : Mob
         base.Start();
         EnhanceMob();
         StartingMob();
+        //StartCoroutine(GoblinStart());
+    }
+
+    public override void Update()
+    {
+        base.Update();
+        transform.LookAt(Player.instance.transform);
+    }
+    public IEnumerator GoblinStart()
+    {
+        while(true)
+        {
+            if (GameManager.instance.gameStarting)
+            {
+                yield return new WaitForSeconds(9f);
+                StartingMob();
+            }
+            yield return null;
+        }
     }
 
     public override void Damaged(int damage, Vector3 positon)
@@ -53,11 +73,24 @@ public class GoblinRanger : Mob
 
     public void MakeArrow()
     {
-        if (grabingArrow == null)
+        for(int i = 0; i < grabingArrows.Length; i++)
         {
-            grabingArrow = Instantiate(arrow, arrowPos.position, arrowPos.rotation, arrowPos);
-            grabingArrow.shotPos = arrowPos;
+            if (!grabingArrows[i].gameObject.activeSelf && currentArrow == null)
+            {
+                currentArrow = grabingArrows[i];
+                print(currentArrow);
+                grabingArrows[i].gameObject.SetActive(true);
+                return;
+            }
         }
+        //grabingArrow = Instantiate(arrow, arrowPos.position, arrowPos.rotation, arrowPos);
+    }
+
+    public void TargettingArrow()
+    {
+        currentArrow.transform.position = new Vector3(arrowLeftPos.position.x, arrowLeftPos.position.y +0.45f, arrowLeftPos.position.z);
+        Vector3 test = transform.eulerAngles;
+        currentArrow.transform.eulerAngles = new Vector3(test.x - 20f, test.y, test.z);
     }
 
     /// <summary>
@@ -65,7 +98,8 @@ public class GoblinRanger : Mob
     /// </summary>
     public void ShootArrow()
     {
-        grabingArrow.ArrowShoot(damage);
+        currentArrow.ArrowShoot(damage);
+        currentArrow = null;
     }
     public void MoveToPoint()
     {

@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 396921657264404689}
   - component: {fileID: 6250626089831138344}
   - component: {fileID: 939511196568239996}
-  - component: {fileID: -2112368089847661994}
   - component: {fileID: 4642155217573512199}
+  - component: {fileID: 184056908224217580}
+  - component: {fileID: 6679325143297928312}
   m_Layer: 0
   m_Name: fantasy horde-goblin_arrow
   m_TagString: Untagged
@@ -99,22 +100,6 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
---- !u!114 &-2112368089847661994
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5657217410764026100}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2615b46c279a4e948a9a458dfe2c20cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shotPos: {fileID: 0}
-  shotPower: 100
-  damage: 0
-  shot: 0
 --- !u!54 &4642155217573512199
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -126,8 +111,37 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!136 &184056908224217580
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5657217410764026100}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 2
+  m_Height: 55
+  m_Direction: 2
+  m_Center: {x: 0.0000076293945, y: -0.0000004768373, z: 0}
+--- !u!114 &6679325143297928312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5657217410764026100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2615b46c279a4e948a9a458dfe2c20cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shotPower: 1000
+  damage: 0
+  shot: 0

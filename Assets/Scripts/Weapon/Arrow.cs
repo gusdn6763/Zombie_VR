@@ -7,44 +7,33 @@ public class Arrow : MonoBehaviour
     private Rigidbody rigi;
     private TrailRenderer trailRenderer;
 
-    [HideInInspector] public Transform shotPos;
+    [SerializeField] private Transform pos;
     public float shotPower;
     public int damage;
-    public bool shot = false;
 
     private void Awake()
     {
         rigi = GetComponent<Rigidbody>();
         trailRenderer = GetComponent<TrailRenderer>();
     }
-
-    private void Update()
+    private void Start()
     {
-        if (!shot)
-        {
-            transform.position = shotPos.position;
-            transform.rotation = shotPos.rotation;
-        }
-    }
-
-    public void ArrowShoot(int damage)
-    {
-        shot = true;
-        transform.LookAt(Player.instance.transform);
-        rigi.AddForce(transform.forward * shotPower);
-        StartCoroutine(BulletDisable());
-        
+        gameObject.SetActive(false);
     }
 
     private void OnDisable()
     {
-        shot = false;
-        trailRenderer.Clear();
-        transform.position = Vector3.zero;
-        transform.rotation = Quaternion.identity;
-        rigi.Sleep();
+        rigi.velocity = Vector3.zero;
+        rigi.angularVelocity = Vector3.zero;
+        transform.position = pos.position;
+        transform.rotation = pos.rotation;
     }
-
+    public void ArrowShoot(int damage)
+    {
+        transform.SetParent(null);
+        transform.LookAt(Player.instance.transform);
+        rigi.AddForce(transform.forward * shotPower);
+    }
 
     IEnumerator BulletDisable()
     {
@@ -52,22 +41,18 @@ public class Arrow : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-
-        if (collision.gameObject.CompareTag(Constant.player))
+        if (other.CompareTag(Constant.hitBox))
         {
-            collision.gameObject.GetComponent<Player>().Damaged(damage);
+            other.GetComponentInParent<Player>().Damaged(damage);
+            transform.SetParent(pos.transform, true);
             gameObject.SetActive(false);
         }
         else
         {
+            transform.SetParent(pos.transform, true);
             gameObject.SetActive(false);
         }
-    }
-
-    public void Shot()
-    {
-        throw new System.NotImplementedException();
     }
 }

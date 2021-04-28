@@ -103,14 +103,14 @@ public class GameManager : MonoBehaviour
     {
         gameStarting = false;
         viewObject.SetActive(true);
-        //spawnPoints = GameObject.FindWithTag(Constant.spawn).GetComponentsInChildren<Transform>();
+        spawnPoints = GameObject.FindWithTag(Constant.spawn).GetComponentsInChildren<Transform>();
 
-        //Player.instance.RayOn();
+        Player.instance.RayOn();
 
         //디버깅용 주석
         //Player.instance.transform.position = savePlayerPos;
         //Player.instance.transform.rotation = Quaternion.Euler(savePlayerRot.x, savePlayerRot.y, savePlayerRot.z);
-        //ObjectPoolManager.instance.transform.position = new Vector3(savePlayerPos.x + 1.5f, savePlayerPos.y + 0.5f, savePlayerPos.z + 1);
+        //ObjectPoolManager.instance.transform.position = new Vector3(savePlayerPos.x + 1.5f, savePlayerPos.y, savePlayerPos.z + 1);
         //ObjectPoolManager.instance.transform.rotation = Quaternion.Euler(savePlayerRot.x, savePlayerRot.y, savePlayerRot.z);
     }
 }
