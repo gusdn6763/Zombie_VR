@@ -11,31 +11,24 @@ public enum CharacterStatus
     ATTACK,
 }
 
-[RequireComponent(typeof(Animator), typeof(NavMeshAgent), typeof(AudioSource))]
+[RequireComponent(typeof(Animator), typeof(NavMeshAgent))]
 public class Mob : MovingObject
 {
-    [SerializeField] private MonsterAttack[] monsterAttacks;
-    [SerializeField] protected float viewRange = 45.0f;
     [SerializeField] protected float attackDist;
-    [SerializeField] protected int damage;
-    [SerializeField] protected bool isAttack;
 
-    private AudioSource threatSound;
+    private GameObject bloodEffect;
     protected NavMeshAgent agent;
     protected Animator animator;
     protected Transform target;
-    private GameObject bloodEffect;
-
 
     private float damping = 1.0f;       //회전할 때의 속도를 조절하는 계수
-    private bool startingMob = false;
-    [SerializeField] protected CharacterStatus enemyStatus = CharacterStatus.IDLE;
+    protected bool isAttack;
+    protected CharacterStatus enemyStatus = CharacterStatus.IDLE;
 
     public virtual void Awake()
     {
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
-        threatSound = GetComponent<AudioSource>();
     }
 
     public virtual void Start()
@@ -44,15 +37,13 @@ public class Mob : MovingObject
         currentHp = hp;
         agent.autoBraking = false;
         agent.updateRotation = false;
-        threatSound.Play();
         bloodEffect = Resources.Load<GameObject>("BulletImpactFleshBigEffect");
     }
 
     public virtual void Update()
     {
-
         //적 캐릭터가 이동 중일 때만 회전
-        if (agent.isStopped == false && startingMob)
+        if (agent.isStopped == false)
         {
             if (agent.desiredVelocity != Vector3.zero)
             {
@@ -80,34 +71,14 @@ public class Mob : MovingObject
         Destroy(blood, 1.0f);
     }
 
-    public void StartingMob()
+    public virtual void StartingMob()
     {
         StartCoroutine(CheckState());
         StartCoroutine(Action());
-        if (SoundManager.instance.soundIsOn)
-        {
-            threatSound.mute = false;
-            threatSound.volume = SoundManager.instance.currentSoundVolume;
-        }
-        else
-        {
-            threatSound.mute = true;
-        }
-    }
-
-    public virtual void Damaged(int damage, Vector3 position)
-    {
-        currentHp -= damage;
-        ShowBloodEffectBullet(position);
-        if (currentHp <= 0)
-        {
-            Die();
-        }
     }
 
     IEnumerator CheckState()
     {
-        startingMob = true;
         yield return new WaitForSeconds(1.0f);
 
         while (true)
@@ -119,7 +90,6 @@ public class Mob : MovingObject
             }
             else
             {
-                print(dist <= attackDist);
                 enemyStatus = CharacterStatus.TRACE;
             }
             yield return (0.3f);
@@ -132,6 +102,9 @@ public class Mob : MovingObject
             yield return (0.3f);
             switch (enemyStatus)
             {
+                case CharacterStatus.IDLE:
+                    agent.isStopped = true;
+                    break;
                 case CharacterStatus.TRACE:
                     if (isAttack)
                     {
@@ -145,8 +118,7 @@ public class Mob : MovingObject
                     animator.SetFloat(Constant.speed, speed);
                     break;
                 case CharacterStatus.ATTACK:
-                    agent.isStopped = true;
-                    agent.velocity = Vector3.zero;
+                    Stop();
                     animator.SetBool(Constant.move, false);
                     if (isAttack == false)
                     {
@@ -158,6 +130,12 @@ public class Mob : MovingObject
         }
     }
 
+    public void Stop()
+    {
+        agent.isStopped = true;
+        agent.velocity = Vector3.zero;
+    }
+
     public bool isViewPlayer()
     {
         bool isView = false;
@@ -166,7 +144,7 @@ public class Mob : MovingObject
         //적 캐릭터와 주인공 사이의 방향 벡터를 계산
         Vector3 dir = (target.position - transform.position);
         //레이캐스트를 투사해서 장애물이 있는지 여부를 판단
-        if (Physics.Raycast(transform.position, dir, out hit, viewRange,1 << 3))
+        if (Physics.Raycast(transform.position, dir, out hit,1 << 3))
         {
             
             isView = (hit.collider.CompareTag(Constant.player));
@@ -175,27 +153,37 @@ public class Mob : MovingObject
     }
 
     //주인공을 추적할 때 이동시키는 함수
-    void TraceTarget(Vector3 pos)
+    public void TraceTarget(Vector3 pos)
     {
         if (agent.isPathStale) return;
         agent.destination = pos;
         agent.isStopped = false;
     }
 
-    public void Attacking()
+    public virtual void EnhanceMob()
     {
-        for(int i = 0; i < monsterAttacks.Length; i++)
+        if (GameManager.instance.MyGameLevel == 2)
         {
-            monsterAttacks[i].attacking = true;
-            monsterAttacks[i].damage = damage;
+            speed = 1f;
+            hp = 6f;
+            damage = 2;
         }
+        else if (GameManager.instance.MyGameLevel == 3)
+        {
+            speed = 2f;
+            hp = 9f;
+            damage = 3;
+        }
+        speed += UnityEngine.Random.Range(0.0f, 0.5f);
     }
 
-    public void Attacked()
+    public virtual void Damaged(int damage, Vector3 position)
     {
-        for (int i = 0; i < monsterAttacks.Length; i++)
+        currentHp -= damage;
+        ShowBloodEffectBullet(position);
+        if (currentHp <= 0)
         {
-            monsterAttacks[i].attacking = false;
+            Die();
         }
     }
 

@@ -9,6 +9,7 @@ public class MovingObject : MonoBehaviour
     [SerializeField] protected float currentHp;
     [SerializeField] protected float speed;
 
+    public int damage;
 
     public virtual void Die()
     {

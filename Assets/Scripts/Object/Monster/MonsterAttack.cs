@@ -7,6 +7,7 @@ public class MonsterAttack : MonoBehaviour
     public bool attacking = false;
     public int damage;
 
+
     private void OnTriggerEnter(Collider other)
     {
         if (attacking)

@@ -5,11 +5,13 @@ using UnityEngine;
 public class Prog : Mob
 {
     private CapsuleCollider capsuleCollider;
+    private MonsterSound monsterSound;
 
     public override void Awake()
     {
         base.Awake();
         capsuleCollider = GetComponent<CapsuleCollider>();
+        monsterSound = GetComponent<MonsterSound>();
     }
 
     public override void Start()
@@ -17,6 +19,8 @@ public class Prog : Mob
         EnhanceMob();
         base.Start();
     }
+
+
     public override void Damaged(int damage, Vector3 positon)
     {
         base.Damaged(damage, positon);
@@ -27,21 +31,5 @@ public class Prog : Mob
     {
         base.Die();
         capsuleCollider.enabled = false;
-    }
-    public void EnhanceMob()
-    {
-        if (GameManager.instance.MyGameLevel == 2)
-        {
-            speed = 1f;
-            hp = 6f;
-            damage = 2;
-        }
-        else if (GameManager.instance.MyGameLevel == 3)
-        {
-            speed = 2f;
-            hp = 9f;
-            damage = 3;
-        }
-        speed += UnityEngine.Random.Range(0.0f, 0.5f);
     }
 }

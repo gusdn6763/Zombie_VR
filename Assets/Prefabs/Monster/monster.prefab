@@ -888,7 +888,9 @@ GameObject:
   - component: {fileID: 5897980322205208725}
   - component: {fileID: 5897980322205208724}
   - component: {fileID: 5897980322205208720}
+  - component: {fileID: -6172348288956061717}
   - component: {fileID: 5897980322205208723}
+  - component: {fileID: 448865177955731387}
   m_Layer: 0
   m_Name: monster
   m_TagString: Monster
@@ -1105,14 +1107,25 @@ MonoBehaviour:
   hp: 3
   currentHp: 0
   speed: 1
-  monsterAttacks:
-  - {fileID: 213575037079018755}
-  - {fileID: 213575037315982919}
-  viewRange: 45
-  attackDist: 1.5
   damage: 1
+  attackDist: 1.5
   isAttack: 0
   enemyStatus: 0
+--- !u!114 &-6172348288956061717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5897980322205208727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 881529d37e3e9aa47a7dad1eab3474b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monsterAttacks:
+  - {fileID: 213575037315982919}
+  - {fileID: 213575037079018755}
 --- !u!114 &5897980322205208723
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1123,6 +1136,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 440e75943a8130f44abbe1bc234516cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &448865177955731387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5897980322205208727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd61dda44973b19498697931a592a4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &5897980322205357326

@@ -6,89 +6,84 @@ public class GoblinRanger : Mob
 {
     private CapsuleCollider capsuleCollider;
 
-    [SerializeField] private Transform arrowPos;
-    [SerializeField] private Transform arrowLeftPos;
-    [SerializeField] private Transform[] points;
+    [SerializeField] private Transform grabArrowPos;
+    [SerializeField] private Transform beforeAttackArrowPos;
+    [SerializeField] private Transform[] avoidancePos;
+    [SerializeField] private Arrow[] objectPoolArrows;
 
-    [SerializeField] private Arrow[] grabingArrows;
     private Arrow currentArrow;
+    private int i;
+
+    [SerializeField] private float waitTime = 2f;
 
     public override void Awake()
     {        
         base.Awake();
         capsuleCollider = GetComponent<CapsuleCollider>();
     }
+
     public override void Start()
     {
+        i = avoidancePos.Length;
         base.Start();
         EnhanceMob();
-        StartingMob();
-        //StartCoroutine(GoblinStart());
+        StartCoroutine(GoblinStart());
     }
 
-    public override void Update()
-    {
-        base.Update();
-        transform.LookAt(Player.instance.transform);
-    }
     public IEnumerator GoblinStart()
     {
         while(true)
         {
             if (GameManager.instance.gameStarting)
             {
-                yield return new WaitForSeconds(9f);
-                StartingMob();
+                yield return new WaitForSeconds(10f);
+                GoblinAttack();
+                break ;
             }
             yield return null;
         }
+    }
+
+    public void GoblinAttack()
+    {
+        Stop();
+        animator.SetBool(Constant.move, false);
+        animator.SetBool(Constant.attack, true);
+        Vector3 targetPosition = new Vector3(target.position.x, transform.position.y, target.position.z);
+        transform.LookAt(targetPosition);
     }
 
     public override void Damaged(int damage, Vector3 positon)
     {
         base.Damaged(damage, positon);
         animator.SetTrigger(Constant.hit);
+        currentArrow.gameObject.SetActive(false);
+        currentArrow = null;
     }
     public override void Die()
     {
         base.Die();
         capsuleCollider.enabled = false;
     }
-    public void EnhanceMob()
-    {
-        if (GameManager.instance.MyGameLevel == 2)
-        {
-            speed = 1f;
-            hp = 6f;
-            damage = 2;
-        }
-        else if (GameManager.instance.MyGameLevel == 3)
-        {
-            speed = 2f;
-            hp = 9f;
-            damage = 3;
-        }
-        speed += UnityEngine.Random.Range(0.0f, 0.5f);
-    }
 
     public void MakeArrow()
     {
-        for(int i = 0; i < grabingArrows.Length; i++)
+        for(int i = 0; i < objectPoolArrows.Length; i++)
         {
-            if (!grabingArrows[i].gameObject.activeSelf && currentArrow == null)
+            if (!objectPoolArrows[i].gameObject.activeSelf && currentArrow == null)
             {
-                currentArrow = grabingArrows[i];
-                print(currentArrow);
-                grabingArrows[i].gameObject.SetActive(true);
+                currentArrow = objectPoolArrows[i];
+                currentArrow.transform.SetParent(grabArrowPos);
+                objectPoolArrows[i].gameObject.SetActive(true);
                 return;
             }
         }
-        //grabingArrow = Instantiate(arrow, arrowPos.position, arrowPos.rotation, arrowPos);
     }
 
     public void TargettingArrow()
     {
-        currentArrow.transform.position = new Vector3(arrowLeftPos.position.x, arrowLeftPos.position.y +0.45f, arrowLeftPos.position.z);
+        currentArrow.transform.SetParent(beforeAttackArrowPos);
+        currentArrow.transform.position = new Vector3(beforeAttackArrowPos.position.x, beforeAttackArrowPos.position.y +0.45f, beforeAttackArrowPos.position.z);
         Vector3 test = transform.eulerAngles;
         currentArrow.transform.eulerAngles = new Vector3(test.x - 20f, test.y, test.z);
     }
@@ -101,35 +96,49 @@ public class GoblinRanger : Mob
         currentArrow.ArrowShoot(damage);
         currentArrow = null;
     }
+
     public void MoveToPoint()
     {
-        if (points.Length != 0)
+        if (avoidancePos.Length != 0)
         {
-            StopAllCoroutines();
+            if (i == 0)
+            {
+                i = avoidancePos.Length;
+            }
+            i--;
+            animator.SetBool(Constant.attack, false);
+            animator.SetBool(Constant.move, false);
             StartCoroutine(MoveToPointCoroutine());
         }
+        else
+        {
+            StartCoroutine(WaitAttack());
+        }    
     }
+
+
     public IEnumerator MoveToPointCoroutine()
     {
-        isAttack = false;
-        int i = points.Length;
+        yield return new WaitForSeconds(waitTime);
+        animator.SetBool(Constant.move, true);
+        TraceTarget(avoidancePos[i].position);
         bool test = false;
         while (!test)
         {
-            animator.SetBool(Constant.attack, isAttack);
-            transform.position = Vector3.MoveTowards(transform.position,
-                points[i].position, 1 * Time.deltaTime);
-            if (Vector3.Distance(transform.position, points[i].position) <= 1f)
+            if (Vector3.Distance(transform.position, avoidancePos[i].position) <= 1f)
             {
-                StartingMob();
-                test = false;
-                i--;
-                if (i == 0)
-                {
-                    i = points.Length;
-                }
+                test = true;
+                animator.SetBool(Constant.move, false);
             }
             yield return null;
         }
+        GoblinAttack();
+    }
+
+    public IEnumerator WaitAttack()
+    {
+        animator.SetBool(Constant.attack, false);
+        yield return new WaitForSeconds(waitTime);
+        GoblinAttack();
     }
 }
