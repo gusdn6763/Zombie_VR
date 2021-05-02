@@ -107,13 +107,14 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    public void PlayBgm(string _name)
+    public void BgmCheck(bool isOn)
     {
+        bgmIsOn = isOn;
         if (bgmIsOn)
         {
             for (int i = 0; i < bgmSounds.Length; i++)
             {
-                if (_name == bgmSounds[i].name)
+                if (GameManager.instance.currenBgm == bgmSounds[i].name)
                 {
                     audioSourceBgm.Stop();
                     audioSourceBgm.clip = bgmSounds[i].clip;
@@ -122,16 +123,14 @@ public class SoundManager : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            audioSourceBgm.Stop();
+        }
     }
     public void PlayBgmVolume(float volume)
     {
         currentBgmVolume = volume;
         audioSourceBgm.volume = currentBgmVolume;
     }
-
-    public void StopBgm()
-    {
-        audioSourceBgm.Stop();
-    }
-
 }

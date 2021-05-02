@@ -12,6 +12,7 @@ TagManager:
   - Wall
   - Spawn
   - HitBox
+  - Hat
   layers:
   - Default
   - TransparentFX
@@ -19,7 +20,7 @@ TagManager:
   - Player
   - Water
   - UI
-  - 
+  - PlayerHat
   - 
   - 
   - 

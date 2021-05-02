@@ -706,13 +706,13 @@ MonoBehaviour:
   currentHp: 100
   speed: 2
   damage: 0
-  controllers:
-  - {fileID: 6698478316348559329}
+  inputSource: 0
   rays:
   - {fileID: 6698478315998891351}
   - {fileID: 6698478316248246910}
   playerUi: {fileID: 6698478314929013606}
   mass: 100
+  additionalHeight: 0.2
   moveImpossible: 0
   rayCheck: 1
 --- !u!1 &6698478315684353439

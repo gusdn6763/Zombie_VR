@@ -1024,9 +1024,9 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4352220939472499069}
-        m_TargetAssemblyTypeName: SettingView, Assembly-CSharp
-        m_MethodName: RayToggle
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: PlayerRayScript, Assembly-CSharp
+        m_MethodName: GradientCheck
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1036,7 +1036,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-  m_IsOn: 1
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: PlayerRayScript, Assembly-CSharp
+        m_MethodName: GradientCheck
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  m_IsOn: 0
 --- !u!1 &4352220939244827367
 GameObject:
   m_ObjectHideFlags: 0

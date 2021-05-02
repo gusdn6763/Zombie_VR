@@ -54,7 +54,6 @@ public class BulletCtrl : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-   
         if (collision.gameObject.CompareTag(Constant.monster))
         {
             collision.gameObject.GetComponent<Mob>().Damaged(damage, transform.position);
@@ -62,7 +61,6 @@ public class BulletCtrl : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag(Constant.zombiePart))
         {
-
         }
         else
         {

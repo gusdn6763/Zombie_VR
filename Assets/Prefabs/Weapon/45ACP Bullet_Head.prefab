@@ -210,10 +210,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   barrelLocation: {fileID: 0}
-  shotPower: 1500
+  shotPower: 1300
   damage: 0
-  shot: 1
-  playerBullet: 1
 --- !u!1001 &7799836738284049863
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -235,7 +233,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8403992145370945202, guid: 9e0ef2cf9cfc11c46bbe7f28b272f6fb, type: 3}
       propertyPath: m_CollisionDetection
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8535412081993147290, guid: 9e0ef2cf9cfc11c46bbe7f28b272f6fb, type: 3}
       propertyPath: m_RootOrder

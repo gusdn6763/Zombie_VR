@@ -9,19 +9,20 @@ public class Player : MovingObject
 {
     public static Player instance;
 
-    [SerializeField] private List<XRController> controllers = null;
-    [SerializeField] private GameObject[] rays;
 
-    private CharacterController characterController = null;     //VR Rig의 캐릭터 컨트롤러
-    private GameObject head = null;                             //카메라 머리 위치
+    [SerializeField] private XRNode playerMoveDevice;                //어떠한 기기로 이동할지 정하는 변수
 
-    public PlayerUI playerUi;                            
+    private CharacterController characterController;     //VR Rig의 캐릭터 컨트롤러
+    private XRRig rig;                          
 
+    public PlayerUI playerUi;
+
+    private Vector2 inputAxis;
     public float mass = 1f;
+    public float additionalHeight = 0.2f;                       //추가적인 머리 크기
     public bool moveImpossible = false;
-    public bool rayCheck = true;
 
-    public void Awake()
+    private void Awake()
     {
         if (instance != null)
         {
@@ -32,63 +33,54 @@ public class Player : MovingObject
             instance = this;
             DontDestroyOnLoad(this);
         }
+        rig = GetComponent<XRRig>();
         characterController = GetComponent<CharacterController>();
-        head = GetComponent<XRRig>().cameraGameObject;
     }
 
-    public void Start()
+    private void Start()
     {
         currentHp = hp;
     }
 
     private void Update()
     {
+        InputDevice device = InputDevices.GetDeviceAtXRNode(playerMoveDevice);
+        device.TryGetFeatureValue(CommonUsages.primary2DAxis, out inputAxis);
+    }
+
+    private void FixedUpdate()
+    {
+        CapsuleFollowHeadset();
+
         if (GameManager.instance.gameStarting)
         {
             if (!moveImpossible)
             {
-                CheckForInput();
-            }
-            ApplyGravity();
-        }
-    }
 
+            }
+        }
+        StartMove();
+        ApplyGravity();
+    }
 
     /// <summary>
-    /// 설정된 컨트롤러중에 입력이 있을시 이동처리
+    /// 변경된 높이값에 따른 PlayerController height값 변경
     /// </summary>
-    void CheckForInput()
+    void CapsuleFollowHeadset()
     {
-        foreach(XRController controller in controllers)
-        {
-            if (controller.inputDevice.TryGetFeatureValue(CommonUsages.primary2DAxis, out Vector2 position))
-            {
-                StartMove(position);
-            }
-        }
+        characterController.height = rig.cameraInRigSpaceHeight + additionalHeight;
+        Vector3 capsuleCenter = transform.InverseTransformPoint(rig.cameraGameObject.transform.position);
+        characterController.center = new Vector3(capsuleCenter.x, characterController.height / 2 + characterController.skinWidth, capsuleCenter.z);
     }
+
 
     //입력받은 조이스틱값으로 이동
-    void StartMove(Vector2 position)
+    void StartMove()
     {
-        Vector3 direction = new Vector3(position.x, 0, position.y);
-        Vector3 headRotation = new Vector3(0, head.transform.eulerAngles.y, 0);
+        Quaternion headYaw = Quaternion.Euler(0, rig.cameraGameObject.transform.eulerAngles.y, 0);
+        Vector3 direction = headYaw * new Vector3(inputAxis.x, 0, inputAxis.y);
 
-        direction = Quaternion.Euler(headRotation) * direction;
-
-        Vector3 movement = direction * speed;
-        characterController.Move(movement * Time.deltaTime);
-    }
-
-    void Jump()
-    {
-        Vector3 direction = new Vector3(0, 5f, 0);
-        Vector3 headRotation = new Vector3(0, head.transform.eulerAngles.y, 0);
-
-        direction = Quaternion.Euler(headRotation) * direction;
-
-        Vector3 movement = direction * speed;
-        characterController.Move(movement * Time.deltaTime);
+        characterController.Move(direction * Time.fixedDeltaTime * speed);
     }
 
     //중력 적용
@@ -103,7 +95,6 @@ public class Player : MovingObject
     /// 데미지 공격받을시
     /// </summary>
     /// <param name="damage"></param>
-
     public void Damaged(int damage)
     {
         currentHp -= damage;
@@ -126,26 +117,6 @@ public class Player : MovingObject
             GameManager.instance.isGameOver = true;
             SoundManager.instance.PlaySE(Constant.playerDieSound);
         }
-    }
-
-    public void RayOn()
-    {
-        for (int i = 0; i < rays.Length; i++)
-        {
-            rays[i].SetActive(true);
-        }
-    }
-    public void RayOff()
-    {
-        for (int i = 0; i < rays.Length; i++)
-        {
-            rays[i].SetActive(false);
-        }
-    }
-    public void PlayerMove(Vector3 direction, float speed)
-    {
-        Vector3 movement = direction * speed;
-        gameObject.transform.Translate(movement * Time.deltaTime);
     }
 }
 

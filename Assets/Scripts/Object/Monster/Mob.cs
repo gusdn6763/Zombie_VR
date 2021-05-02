@@ -23,7 +23,7 @@ public class Mob : MovingObject
 
     private float damping = 1.0f;       //회전할 때의 속도를 조절하는 계수
     protected bool isAttack;
-    protected CharacterStatus enemyStatus = CharacterStatus.IDLE;
+    public CharacterStatus enemyStatus = CharacterStatus.IDLE;
 
     public virtual void Awake()
     {
@@ -144,10 +144,9 @@ public class Mob : MovingObject
         //적 캐릭터와 주인공 사이의 방향 벡터를 계산
         Vector3 dir = (target.position - transform.position);
         //레이캐스트를 투사해서 장애물이 있는지 여부를 판단
-        if (Physics.Raycast(transform.position, dir, out hit,1 << 3))
+        if (Physics.Raycast(transform.position, dir, out hit,10000, 1 << 3))
         {
-            
-            isView = (hit.collider.CompareTag(Constant.player));
+            isView = (hit.collider.CompareTag(Constant.hitBox));
         }
         return isView;
     }

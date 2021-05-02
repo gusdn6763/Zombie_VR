@@ -48,14 +48,6 @@ public class GameManager : MonoBehaviour
         gameStarting = true;
         MyGameLevel = level;
         spawnTime -= level;
-        if (Player.instance.rayCheck)
-        {
-            Player.instance.RayOn();
-        }
-        else
-        {
-            Player.instance.RayOff();
-        }
         StartCoroutine(StartGame());
     }
 
@@ -104,8 +96,6 @@ public class GameManager : MonoBehaviour
         gameStarting = false;
         viewObject.SetActive(true);
         spawnPoints = GameObject.FindWithTag(Constant.spawn).GetComponentsInChildren<Transform>();
-
-        Player.instance.RayOn();
 
         //디버깅용 주석
         Player.instance.transform.position = savePlayerPos;
