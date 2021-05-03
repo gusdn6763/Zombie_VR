@@ -5,22 +5,24 @@ using UnityEngine.UI;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 
-public class Player : MovingObject
+public class Player : MonoBehaviour
 {
     public static Player instance;
 
-
+    [SerializeField] protected float hp;            //최대 HP
+    [SerializeField] protected float currentHp;     //현재 HP
+    [SerializeField] protected float speed;         //플레이어 속도
     [SerializeField] private XRNode playerMoveDevice;                //어떠한 기기로 이동할지 정하는 변수
 
     private CharacterController characterController;     //VR Rig의 캐릭터 컨트롤러
     private XRRig rig;                          
-
     public PlayerUI playerUi;
 
     private Vector2 inputAxis;
-    public float mass = 1f;
+    public float mass = 1f;                                     //영향받는 중력크기
     public float additionalHeight = 0.2f;                       //추가적인 머리 크기
-    public bool moveImpossible = false;
+    public bool moveImpossible = false;                         //플레이어 이동을 금지
+    public int damage;
 
     private void Awake()
     {
@@ -108,11 +110,12 @@ public class Player : MovingObject
         }
     }
 
-    public override void Die()
+    public void Die()
     {
         if (!GameManager.instance.isGameOver)
         {
-            base.Die();
+            speed = 0f;
+            StopAllCoroutines();
             playerUi.PlayerDieUI();
             GameManager.instance.isGameOver = true;
             SoundManager.instance.PlaySE(Constant.playerDieSound);

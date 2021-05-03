@@ -16,7 +16,7 @@ public class Part : MonoBehaviour
     public string partName;
     public bool broken = false;
 
-    public float MyHp { get; set; }
+    public float PartHp { get { return hp; } set{ hp = value; } }
 
 
     public void Damaged(int damage, Vector3 position)
@@ -28,17 +28,21 @@ public class Part : MonoBehaviour
  
             if (hp <= 0)
             {
-                broken = true;
-                brokenPart(partName);
-                for (int i = 0; i < brokeObjects.Length; i++)
-                {
-                    Destroy(brokeObjects[i]);
-                    collObjects[i].enabled = false;                    
-                }
+                DisableObject();
             }
         }
     }
 
+    public void DisableObject()
+    {
+        broken = true;
+        brokenPart(partName);
+        for (int i = 0; i < brokeObjects.Length; i++)
+        {
+            Destroy(brokeObjects[i]);
+            collObjects[i].enabled = false;
+        }
+    }
 
 
 }

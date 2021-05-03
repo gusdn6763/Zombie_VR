@@ -7,22 +7,22 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    [SerializeField] private List<Mob> mobs = new List<Mob>();
-    [SerializeField] private GameObject viewObject;
-    [SerializeField] private int mobMaxCount = 0;
-    [SerializeField] private float spawnTime = 0;
+    [SerializeField] private List<Mob> mobs = new List<Mob>();      //랜덤으로 생성하는 몹들
+    [SerializeField] private GameObject viewObject;                 //씬 시작시 셋팅 캔버스 활성화
+    [SerializeField] private int mobMaxCount = 0;                   //최대로 출현한 몹들의 수
+    [SerializeField] private float spawnTime = 0;                   //몹 스폰 일정 시간
 
-    private Transform[] spawnPoints = null;
-    private Vector3 savePlayerPos;
-    private Vector3 savePlayerRot;
-    private int currrentMobCount = 0;
+    private Transform[] spawnPoints = null;                         //몹 스폰 포인트
+    private Vector3 savePlayerPos;                                  //플레이어 시작위치
+    private Vector3 savePlayerRot;                                  //플레이어 시작위치
+    private int currrentMobCount = 0;                               //현재 몹 갯수
 
-    public string currenBgm;
-    public int currentSceneLevel = 0;
-    public bool gameStarting = false;
-    public bool isGameOver = false;
+    public string currenBgm;                                        //현재 실행중인 음악
+    public int currentSceneLevel = 0;                               //현재 스테이지 레벨
+    public bool gameStarting = false;                               //난이도 선택시 true활성화
+    public bool isGameOver = false;                                 //플레이어 죽을시 true활성화
 
-    public int MyGameLevel { get; set; }
+    public int Difficulty { get; set; }
 
     private void Awake()
     {
@@ -43,16 +43,21 @@ public class GameManager : MonoBehaviour
         viewObject.SetActive(true);
     }
 
+    /// <summary>
+    /// 난이도 선택 버튼에서 함수 실행
+    /// </summary>
+    /// <param name="level">선택한 난이도 레벨</param>
     public void ChooseLevel(int level)
     {
         gameStarting = true;
-        MyGameLevel = level;
+        Difficulty = level;
         spawnTime -= level;
         StartCoroutine(StartGame());
     }
 
     IEnumerator StartGame()
     {
+        ObjectPoolManager.instance.MakeDoubleGun();
         for (int i = 0; i < 10; i++)
         {
             ObjectPoolManager.instance.MakeGun();
@@ -82,6 +87,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 포탈로 이동시 작동하는 함수
+    /// </summary>
+    /// <param name="moveStageLevel">이동할 스테이지</param>
+    /// <param name="startPosition">시작위치</param>
+    /// <param name="startRotation">시작위치</param>
     public void MoveStage(int moveStageLevel, Vector3 startPosition, Vector3 startRotation)
     {
         StopAllCoroutines();
@@ -91,16 +102,18 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(Constant.loadingScene);
     }
 
+    /// <summary>
+    /// 씬으로 이동이 완료시 실행하는 함수
+    /// </summary>
     public void StartScene()
     {
         gameStarting = false;
         viewObject.SetActive(true);
         spawnPoints = GameObject.FindWithTag(Constant.spawn).GetComponentsInChildren<Transform>();
 
-        //디버깅용 주석
         Player.instance.transform.position = savePlayerPos;
         Player.instance.transform.rotation = Quaternion.Euler(savePlayerRot.x, savePlayerRot.y, savePlayerRot.z);
         ObjectPoolManager.instance.transform.position = new Vector3(savePlayerPos.x + 1.5f, savePlayerPos.y, savePlayerPos.z + 1);
-        ObjectPoolManager.instance.transform.rotation = Quaternion.Euler(savePlayerRot.x, savePlayerRot.y, savePlayerRot.z);
+        ObjectPoolManager.instance.transform.rotation = Quaternion.Euler(savePlayerRot.x, -savePlayerRot.y, savePlayerRot.z);
     }
 }

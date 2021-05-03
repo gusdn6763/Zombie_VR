@@ -9,7 +9,7 @@ public class XRSocketInteractorTag : XRSocketInteractor
 
     public override bool CanSelect(XRBaseInteractable interactable)
     {
-        //1, 4
+        //1첫 시작 & 여러번 반복
         print("dd");
         return base.CanSelect(interactable) && interactable.CompareTag(targetTag);
     }
@@ -17,10 +17,11 @@ public class XRSocketInteractorTag : XRSocketInteractor
 
     protected override void OnHoverEntered(HoverEnterEventArgs args)
     {
-        //3
+        //3 한번만 실행?
         print("ad");
         if (args.interactable.CompareTag(targetTag))
         {
+
             showInteractableHoverMeshes = true;
             base.OnHoverEntered(args);
         }
@@ -31,7 +32,7 @@ public class XRSocketInteractorTag : XRSocketInteractor
     }
     protected override void OnHoverEntering(HoverEnterEventArgs args)
     {
-        //2
+        //2 한번만 실행
         print("aa");
         base.OnHoverEntering(args);
     }

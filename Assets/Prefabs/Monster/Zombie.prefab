@@ -1315,7 +1315,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 1
-  collObjects: []
+  collObjects:
+  - {fileID: 7013603729307321572}
   brokeObjects:
   - {fileID: 7013603728997354809}
   partName: Leg
@@ -1538,11 +1539,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aba9caaa8fbcef640a723ef7576f34a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 3
-  currentHp: 0
-  speed: 0
-  damage: 1
+  enhanceMob:
+  - speed: 1.3
+    hp: 2
+    damage: 1
+  - speed: 1.7
+    hp: 3
+    damage: 2
+  - speed: 2.1
+    hp: 4
+    damage: 3
   attackDist: 1.25
+  damage: 1
   enemyStatus: 0
   zombie_Parts:
   - {fileID: 7013603728828752887}

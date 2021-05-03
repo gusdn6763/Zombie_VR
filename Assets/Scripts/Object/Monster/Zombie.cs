@@ -3,23 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class Zombie : Mob
 {
     [SerializeField] private List<Part> zombie_Parts;
-    private MonsterSound monsterSound;
-
-    public override void Awake()
-    {
-        base.Awake();
-        monsterSound = GetComponent<MonsterSound>();
-    }
 
     public override void Start()
     {
-        EnhanceMob();
         for (int i = 0; i < zombie_Parts.Count; i++)
         {
+            zombie_Parts[i].PartHp += GameManager.instance.Difficulty - 1;
             zombie_Parts[i].hpDelivery += Damaged;
             zombie_Parts[i].brokenPart += BrokenPart;
         }
@@ -30,6 +22,7 @@ public class Zombie : Mob
     {
         for (int i = 0; i < zombie_Parts.Count; i++)
         {
+            zombie_Parts[i].DisableObject();
             zombie_Parts[i].hpDelivery -= Damaged;
             zombie_Parts[i].brokenPart -= BrokenPart;
         }

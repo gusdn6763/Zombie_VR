@@ -45,6 +45,10 @@ public class CustomController : MonoBehaviour
         }
         if (currentUsingDevice.TryGetFeatureValue(CommonUsages.triggerButton, out menuButtonValue) && menuButtonValue && currentWeapon != null)
         {
+            if (currentWeapon.GetType() == typeof(DoubleGun))
+            {
+                currentWeapon.Attack();
+            }
             if (oneClicktriggerButtonCheck)
             {
                 currentWeapon.Attack();

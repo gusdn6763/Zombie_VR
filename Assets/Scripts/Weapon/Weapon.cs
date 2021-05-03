@@ -18,11 +18,6 @@ public class Weapon : XRGrabInteractable
 
     protected override void OnSelectEntering(SelectEnterEventArgs args)
     {
-        if (this.GetType() == typeof(Gun) && (args.interactor.CompareTag(Constant.handLeft)
-            || args.interactor.CompareTag(Constant.handRight)))
-        {
-            args.interactor.GetComponentInChildren<CustomController>().GetWeapon(this);
-        }
         if (args.interactor.CompareTag(Constant.handRight))
         {
             attachTransform.localPosition = rightAttachPos;

@@ -136,7 +136,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 923400834682522789}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0.1, z: 0.212}
+  m_LocalPosition: {x: -0, y: 0.1, z: 0.2365}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 923400835775843522}
@@ -577,17 +577,18 @@ MonoBehaviour:
   m_ThrowAngularVelocityScale: 1
   m_ForceGravityOnDetach: 0
   m_RetainTransformParent: 1
+  grapingHand: 0
   leftAttachPos: {x: 0.02, y: 0.075, z: 0.06}
   leftAttachrotation: {x: 0, y: 0, z: 0}
   rightAttachPos: {x: -0.02, y: 0.075, z: 0.06}
   rightAttachrotation: {x: 0, y: 0, z: 0}
   damage: 1
   barrelLocation: {fileID: 923400834682522786}
-  muzzleFlashPrefab: {fileID: 1782395880954752, guid: 3dd9cf2e209c504448f1c4c6835675cf, type: 3}
   maxBullet: 10
   remainingBullet: 10
   reloadTime: 2
   delayTime: 0.2
+  isReloading: 0
 --- !u!1 &923400835347196285
 GameObject:
   m_ObjectHideFlags: 0

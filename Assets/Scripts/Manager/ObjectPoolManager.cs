@@ -6,9 +6,11 @@ public class ObjectPoolManager : MonoBehaviour
 {
     public static ObjectPoolManager instance;
 
+    [SerializeField] private Gun gun;
+    [SerializeField] private DoubleGun doubleGun;
+    [SerializeField] private Transform bulletBox;
+
     public List<BulletCtrl> bulletManager = new List<BulletCtrl>();
-    public Gun gun;
-    public Transform bulletBox;
     public BulletCtrl bullet;
     public int bulletCount = 30;
 
@@ -49,6 +51,11 @@ public class ObjectPoolManager : MonoBehaviour
     /// 디버깅
     /// </summary>
     public void MakeGun()
+    {
+        Instantiate(gun, new Vector3(transform.position.x, transform.position.y + 2, transform.position.z), transform.rotation);
+    }
+
+    public void MakeDoubleGun()
     {
         Instantiate(gun, new Vector3(transform.position.x, transform.position.y + 2, transform.position.z), transform.rotation);
     }

@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class GoblinRanger : Mob
 {
-    private CapsuleCollider capsuleCollider;
-
     [SerializeField] private Transform grabArrowPos;
     [SerializeField] private Transform beforeAttackArrowPos;
     [SerializeField] private Transform[] avoidancePos;
@@ -16,19 +14,14 @@ public class GoblinRanger : Mob
 
     [SerializeField] private float waitTime = 2f;
 
-    public override void Awake()
-    {        
-        base.Awake();
-        capsuleCollider = GetComponent<CapsuleCollider>();
-    }
 
     public override void Start()
     {
         i = avoidancePos.Length;
         base.Start();
-        EnhanceMob();
         StartCoroutine(GoblinStart());
     }
+
 
     public IEnumerator GoblinStart()
     {
@@ -57,13 +50,11 @@ public class GoblinRanger : Mob
     {
         base.Damaged(damage, positon);
         animator.SetTrigger(Constant.hit);
-        currentArrow.gameObject.SetActive(false);
-        currentArrow = null;
-    }
-    public override void Die()
-    {
-        base.Die();
-        capsuleCollider.enabled = false;
+        if (currentArrow != null)
+        {
+            currentArrow.gameObject.SetActive(false);
+            currentArrow = null;
+        }
     }
 
     public void MakeArrow()

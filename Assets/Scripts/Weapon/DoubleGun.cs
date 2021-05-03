@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-public class TwoHandGrabInteractable : XRGrabInteractable
+public class DoubleGun : Gun
 {
     public List<XRSimpleInteractable> secondHandGrabPoints = new List<XRSimpleInteractable>();
     private XRBaseInteractor secondInteractor;
@@ -13,7 +13,6 @@ public class TwoHandGrabInteractable : XRGrabInteractable
     public bool snapToSecondHand = true;
     private Quaternion initialRotationOffset;
 
-    // Start is called before the first frame update
     void Start()
     {
         foreach (var item in secondHandGrabPoints)
@@ -23,17 +22,10 @@ public class TwoHandGrabInteractable : XRGrabInteractable
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public override void ProcessInteractable(XRInteractionUpdateOrder.UpdatePhase updatePhase)
     {
         if (secondInteractor && selectingInteractor)
         {
-            //Compute the rotation 
             if(snapToSecondHand)
                 selectingInteractor.attachTransform.rotation = GetTwoHandRotation();
             else
@@ -64,9 +56,11 @@ public class TwoHandGrabInteractable : XRGrabInteractable
 
     public void OnSecondHandGrab(XRBaseInteractor interactor)
     {
-        Debug.Log("SECOND HAND GRAB");
-        secondInteractor = interactor;
-        initialRotationOffset = Quaternion.Inverse(GetTwoHandRotation()) * selectingInteractor.attachTransform.rotation;
+        if (interactor != null)
+        {
+            secondInteractor = interactor;
+            initialRotationOffset = Quaternion.Inverse(GetTwoHandRotation()) * selectingInteractor.attachTransform.rotation;
+        }
     }
 
     public void OnSecondHandRelease(XRBaseInteractor interactor)

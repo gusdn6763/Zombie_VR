@@ -92,6 +92,12 @@ public class Gun : Weapon
         bullet.gameObject.SetActive(true);
     }
 
+    protected override void OnSelectEntering(SelectEnterEventArgs args)
+    {
+        args.interactor.GetComponentInChildren<CustomController>().GetWeapon(this);
+        base.OnSelectEntering(args);
+    }
+
     protected override void OnSelectExiting(SelectExitEventArgs args)
     {
         if (grapingHand == HandState.LEFT)

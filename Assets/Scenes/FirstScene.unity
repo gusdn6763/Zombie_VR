@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.0014740777, g: 0.001692177, b: 0.051200673, a: 1}
+  m_IndirectSpecularColor: {r: 0.0007200191, g: 0.0018433576, b: 0.05432608, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4129,7 +4129,7 @@ MonoBehaviour:
   m_InteractionManager: {fileID: 445462134}
   m_InteractionLayerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 64
   m_AttachTransform: {fileID: 0}
   m_StartingSelectedInteractable: {fileID: 0}
   m_HoverEntered:
@@ -7517,7 +7517,7 @@ MonoBehaviour:
   m_InteractionManager: {fileID: 0}
   m_InteractionLayerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 32
   m_AttachTransform: {fileID: 0}
   m_StartingSelectedInteractable: {fileID: 0}
   m_HoverEntered:
@@ -9530,7 +9530,7 @@ MonoBehaviour:
   m_InteractionManager: {fileID: 0}
   m_InteractionLayerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 32
   m_AttachTransform: {fileID: 0}
   m_StartingSelectedInteractable: {fileID: 0}
   m_HoverEntered:
@@ -10063,12 +10063,12 @@ MonoBehaviour:
   hp: 1000
   currentHp: 10
   speed: 2
-  damage: 0
   playerMoveDevice: 4
   playerUi: {fileID: 2139722987}
   mass: 50
   additionalHeight: 0.2
   moveImpossible: 0
+  damage: 0
 --- !u!114 &1097132830
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10134,7 +10134,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 2
   m_Height: 1
-  m_Radius: 0.15
+  m_Radius: 0.01
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
@@ -18437,12 +18437,6 @@ MonoBehaviour:
       m_Calls: []
   m_SelectEntered:
     m_PersistentCalls:
-      m_Calls: []
-  m_SelectExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Activated:
-    m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 447977103107099141}
         m_TargetAssemblyTypeName: UnityEngine.Collider, UnityEngine
@@ -18456,7 +18450,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-  m_Deactivated:
+  m_SelectExited:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 447977103107099141}
@@ -18471,6 +18465,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  m_Activated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Deactivated:
+    m_PersistentCalls:
+      m_Calls: []
   m_OnFirstHoverEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -18803,7 +18803,7 @@ PrefabInstance:
     - target: {fileID: 7095423160774618116, guid: 83d50a616d529ce46a534512446dd606, type: 3}
       propertyPath: mobs.Array.data[1]
       value: 
-      objectReference: {fileID: 7887534473001867167, guid: 82242b92666dc4a448480290dd1be1ed, type: 3}
+      objectReference: {fileID: 7013603729327832373, guid: 82242b92666dc4a448480290dd1be1ed, type: 3}
     - target: {fileID: 7095423160774618116, guid: 83d50a616d529ce46a534512446dd606, type: 3}
       propertyPath: mobs.Array.data[2]
       value: 
@@ -20078,9 +20078,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 407a9cdc62d2b2e44988a87db4bc3773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletManager: []
   gun: {fileID: 923400835328147993, guid: 743fedb029b97a94d974b30f5ff733b3, type: 3}
+  doubleGun: {fileID: 0}
   bulletBox: {fileID: 3504369089748559377}
+  bulletManager: []
   bullet: {fileID: 4659329760022895736, guid: 65c9f6563c561ee4e8905d1e6a32548b, type: 3}
   bulletCount: 30
 --- !u!4 &3504369089078652917
@@ -24022,6 +24023,18 @@ MonoBehaviour:
   m_ThrowAngularVelocityScale: 0.25
   m_ForceGravityOnDetach: 0
   m_RetainTransformParent: 1
+  grapingHand: 0
+  leftAttachPos: {x: 0, y: 0, z: 0}
+  leftAttachrotation: {x: 0, y: 0, z: 0}
+  rightAttachPos: {x: 0, y: 0, z: 0}
+  rightAttachrotation: {x: 0, y: 0, z: 0}
+  damage: 0
+  barrelLocation: {fileID: 8959434870736863752}
+  maxBullet: 10
+  remainingBullet: 10
+  reloadTime: 2
+  delayTime: 0
+  isReloading: 0
   secondHandGrabPoints:
   - {fileID: 8959434870295063870}
   - {fileID: 8959434871041417397}
@@ -24182,13 +24195,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8959434870736863755}
-  m_LocalRotation: {x: -0, y: -1, z: -0, w: 0.00000058114523}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.06, z: -0.499}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8925281201461452344}
   m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: -180.00002, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8959434870736863755
 GameObject:
   m_ObjectHideFlags: 0
