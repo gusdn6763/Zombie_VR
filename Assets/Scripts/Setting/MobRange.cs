@@ -24,6 +24,7 @@ public class MobRange : MonoBehaviour
         if ((other.CompareTag(Constant.weapon) || other.CompareTag(Constant.player)) &&
             check == false)
         {
+            print(other.gameObject);
             check = true;
             TraceingPlayer();
         }

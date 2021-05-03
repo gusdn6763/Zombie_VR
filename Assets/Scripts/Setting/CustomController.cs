@@ -45,12 +45,15 @@ public class CustomController : MonoBehaviour
         }
         if (currentUsingDevice.TryGetFeatureValue(CommonUsages.triggerButton, out menuButtonValue) && menuButtonValue && currentWeapon != null)
         {
+           
             if (currentWeapon.GetType() == typeof(DoubleGun))
             {
+                print(menuButtonValue);
                 currentWeapon.Attack();
             }
-            if (oneClicktriggerButtonCheck)
+            else if (oneClicktriggerButtonCheck && currentWeapon.GetType() == typeof(Gun))
             {
+                print(menuButtonValue);
                 currentWeapon.Attack();
                 oneClicktriggerButtonCheck = false;
             }
@@ -158,11 +161,11 @@ public class CustomController : MonoBehaviour
         }
     }
 
-    public void GetWeapon(Weapon currentGun)
+    public void GetWeapon(Gun currentGun)
     {
         if (currentGun != null)
         {
-            this.currentWeapon = (Gun)currentGun;
+            this.currentWeapon = currentGun;
             this.currentWeapon.grapingHand = currentHand;
             this.currentWeapon.UpdateBulletText();
         }

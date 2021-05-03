@@ -5,31 +5,28 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class DoubleGun : Gun
 {
-    public List<XRSimpleInteractable> secondHandGrabPoints = new List<XRSimpleInteractable>();
+    public XRSimpleInteractable secondHandGrabPoints;
     private XRBaseInteractor secondInteractor;
     private Quaternion attachInitialRotation;
     public enum TwoHandRotationType { None, First, Second };
     public TwoHandRotationType twoHandRotationType;
-    public bool snapToSecondHand = true;
     private Quaternion initialRotationOffset;
 
+    //시작시 2번째 그랩 위치의 
     void Start()
     {
-        foreach (var item in secondHandGrabPoints)
-        {
-            item.onSelectEnter.AddListener(OnSecondHandGrab);
-            item.onSelectExit.AddListener(OnSecondHandRelease);
-        }
+        secondHandGrabPoints.onSelectEntered.AddListener(OnSecondHandGrab);
+        secondHandGrabPoints.onSelectExited.AddListener(OnSecondHandRelease);
     }
 
+    //selectingInteractor는 레이
+    //secondInteractor는 2번째 그랩
+    //interactor는 플레이어 손 오브젝트
     public override void ProcessInteractable(XRInteractionUpdateOrder.UpdatePhase updatePhase)
     {
         if (secondInteractor && selectingInteractor)
         {
-            if(snapToSecondHand)
-                selectingInteractor.attachTransform.rotation = GetTwoHandRotation();
-            else
-                selectingInteractor.attachTransform.rotation = GetTwoHandRotation() * initialRotationOffset;
+            selectingInteractor.attachTransform.rotation = GetTwoHandRotation();
         }
         base.ProcessInteractable(updatePhase);
     }
@@ -59,7 +56,10 @@ public class DoubleGun : Gun
         if (interactor != null)
         {
             secondInteractor = interactor;
-            initialRotationOffset = Quaternion.Inverse(GetTwoHandRotation()) * selectingInteractor.attachTransform.rotation;
+            if (selectingInteractor)
+            {
+                initialRotationOffset = Quaternion.Inverse(GetTwoHandRotation()) * selectingInteractor.attachTransform.rotation;
+            }
         }
     }
 
