@@ -34,19 +34,7 @@ public class DoubleGun : Gun
     private Quaternion GetTwoHandRotation()
     {
         Quaternion targetRotation;
-        if (twoHandRotationType == TwoHandRotationType.None)
-        {
-            targetRotation = Quaternion.LookRotation(secondInteractor.attachTransform.position - selectingInteractor.attachTransform.position); ;
-        }
-        else if (twoHandRotationType == TwoHandRotationType.First)
-        {
-            targetRotation = Quaternion.LookRotation(secondInteractor.attachTransform.position - selectingInteractor.attachTransform.position, selectingInteractor.attachTransform.up);
-        }
-        else
-        {
-            targetRotation = Quaternion.LookRotation(secondInteractor.attachTransform.position - selectingInteractor.attachTransform.position, secondInteractor.attachTransform.up);
-        }
-
+        targetRotation = Quaternion.LookRotation(secondInteractor.attachTransform.position - selectingInteractor.attachTransform.position);
         return targetRotation;
     }
 

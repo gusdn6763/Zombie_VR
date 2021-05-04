@@ -12,7 +12,10 @@ public class MoveScene : MonoBehaviour
     {
         if (other.CompareTag(Constant.player))
         {
-            GameManager.instance.MoveStage(moveStageLevel, startPosition, startRotation);
+            if (Player.instance.keyCheck)
+            {
+                GameManager.instance.MoveStage(moveStageLevel, startPosition, startRotation);
+            }
         }
     }
 }

@@ -31,5 +31,6 @@
     public const string secondScene = "SecondScene";
 
     public const string hitBox = "HitBox";
+    public const string key = "Key";
 }
 

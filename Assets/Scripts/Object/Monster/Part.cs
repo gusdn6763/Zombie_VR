@@ -24,11 +24,14 @@ public class Part : MonoBehaviour
         hp -= damage;
         if (!broken)
         {
-            hpDelivery(damage, position);
- 
-            if (hp <= 0)
+            if (hpDelivery != null)
             {
-                DisableObject();
+                hpDelivery?.Invoke(damage, position);
+
+                if (hp <= 0)
+                {
+                    DisableObject();
+                }
             }
         }
     }

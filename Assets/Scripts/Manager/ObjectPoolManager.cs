@@ -57,6 +57,6 @@ public class ObjectPoolManager : MonoBehaviour
 
     public void MakeDoubleGun()
     {
-        Instantiate(gun, new Vector3(transform.position.x, transform.position.y + 2, transform.position.z), transform.rotation);
+        Instantiate(doubleGun, new Vector3(transform.position.x, transform.position.y + 2, transform.position.z), transform.rotation);
     }
 }

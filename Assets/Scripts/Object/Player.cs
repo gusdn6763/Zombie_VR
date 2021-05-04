@@ -18,7 +18,9 @@ public class Player : MonoBehaviour
     private XRRig rig;                          
     public PlayerUI playerUi;
 
+
     private Vector2 inputAxis;
+    public bool keyCheck = false;
     public float mass = 1f;                                     //영향받는 중력크기
     public float additionalHeight = 0.2f;                       //추가적인 머리 크기
     public bool moveImpossible = false;                         //플레이어 이동을 금지
@@ -58,11 +60,10 @@ public class Player : MonoBehaviour
         {
             if (!moveImpossible)
             {
-
+                StartMove();
+                ApplyGravity();
             }
         }
-        StartMove();
-        ApplyGravity();
     }
 
     /// <summary>
@@ -72,7 +73,7 @@ public class Player : MonoBehaviour
     {
         characterController.height = rig.cameraInRigSpaceHeight + additionalHeight;
         Vector3 capsuleCenter = transform.InverseTransformPoint(rig.cameraGameObject.transform.position);
-        characterController.center = new Vector3(capsuleCenter.x, characterController.height / 2 + characterController.skinWidth, capsuleCenter.z);
+        characterController.center = new Vector3(capsuleCenter.x, characterController.height / 2 + characterController.skinWidth + additionalHeight, capsuleCenter.z);
     }
 
 
@@ -119,6 +120,15 @@ public class Player : MonoBehaviour
             playerUi.PlayerDieUI();
             GameManager.instance.isGameOver = true;
             SoundManager.instance.PlaySE(Constant.playerDieSound);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag(Constant.key))
+        {
+            Destroy(other.gameObject);
+            keyCheck = true;
         }
     }
 }

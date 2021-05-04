@@ -25,7 +25,7 @@ public class GoblinRanger : Mob
 
     public IEnumerator GoblinStart()
     {
-        while(true)
+        while(enemyStatus != CharacterStatus.Die)
         {
             if (GameManager.instance.gameStarting)
             {
@@ -84,8 +84,11 @@ public class GoblinRanger : Mob
     /// </summary>
     public void ShootArrow()
     {
-        currentArrow.ArrowShoot(damage);
-        currentArrow = null;
+        if (currentArrow != null)
+        {
+            currentArrow.ArrowShoot(damage);
+            currentArrow = null;
+        }
     }
 
     public void MoveToPoint()

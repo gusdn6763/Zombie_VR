@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
     {
         gameStarting = true;
         Difficulty = level;
-        spawnTime -= level;
+        spawnTime -= Mathf.Round(level / 2);
         StartCoroutine(StartGame());
     }
 
@@ -60,12 +60,15 @@ public class GameManager : MonoBehaviour
         ObjectPoolManager.instance.MakeDoubleGun();
         for (int i = 0; i < 10; i++)
         {
-            ObjectPoolManager.instance.MakeGun();
             yield return new WaitForSeconds(1f);
             SoundManager.instance.PlaySE(Constant.countDown + (10 - i).ToString());
             if (i == 5)
             {
                 StartCoroutine(CreateEnemy());
+            }
+            else if (i > 3)
+            {
+                ObjectPoolManager.instance.MakeGun();
             }
         }
     }
@@ -107,10 +110,12 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void StartScene()
     {
+        currrentMobCount = 0;
         gameStarting = false;
         viewObject.SetActive(true);
         spawnPoints = GameObject.FindWithTag(Constant.spawn).GetComponentsInChildren<Transform>();
 
+        Player.instance.moveImpossible = true;
         Player.instance.transform.position = savePlayerPos;
         Player.instance.transform.rotation = Quaternion.Euler(savePlayerRot.x, savePlayerRot.y, savePlayerRot.z);
         ObjectPoolManager.instance.transform.position = new Vector3(savePlayerPos.x + 1.5f, savePlayerPos.y, savePlayerPos.z + 1);

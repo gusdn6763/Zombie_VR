@@ -361,7 +361,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 601910ab5c5afb14bb35d80b46708838, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 3
+  hp: 2
   collObjects: []
   brokeObjects: []
   partName: 

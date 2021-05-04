@@ -49,6 +49,7 @@ public class BulletCtrl : MonoBehaviour
         if (other.CompareTag(Constant.zombiePart))
         {
             other.GetComponent<Part>().Damaged(damage, transform.position);
+            gameObject.SetActive(false);
         }
     }
 
