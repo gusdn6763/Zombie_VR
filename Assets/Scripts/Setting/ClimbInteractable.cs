@@ -5,21 +5,22 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class ClimbInteractable : XRBaseInteractable
 {
-    protected override void OnSelectEntered(XRBaseInteractor interactor)
-    {
-        base.OnSelectEntered(interactor);
 
-        if (interactor is XRDirectInteractor)
-            Climber.climbingHand = interactor.GetComponent<XRController>();
+    protected override void OnSelectEntered(SelectEnterEventArgs args)
+    {
+        base.OnSelectEntered(args);
+
+        if (args.interactor is XRDirectInteractor)
+            Climber.climbingHand = args.interactor.GetComponent<XRController>();
     }
 
-    protected override void OnSelectExited(XRBaseInteractor interactor)
+    protected override void OnSelectExited(SelectExitEventArgs args)
     {
-        base.OnSelectExited(interactor);
+        base.OnSelectExited(args);
 
-        if (interactor is XRDirectInteractor)
+        if (args.interactor is XRDirectInteractor)
         {
-            if (Climber.climbingHand && Climber.climbingHand.name == interactor.name)
+            if (Climber.climbingHand && Climber.climbingHand.name == args.interactor.name)
             {
                 Climber.climbingHand = null;
             }

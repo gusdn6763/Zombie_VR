@@ -121,13 +121,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enhanceMob:
   - speed: 1
-    hp: 10
+    hp: 15
     damage: 2
   - speed: 1.5
-    hp: 20
+    hp: 30
     damage: 3
   - speed: 2
-    hp: 30
+    hp: 50
     damage: 5
   attackDist: 10000
   damage: 0

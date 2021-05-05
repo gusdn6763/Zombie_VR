@@ -304,7 +304,7 @@ GameObject:
   - component: {fileID: 4260797618919643527}
   m_Layer: 7
   m_Name: M4_Complete
-  m_TagString: Untagged
+  m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -482,34 +482,10 @@ MonoBehaviour:
       m_Calls: []
   m_SelectEntered:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4026232420440483017}
-        m_TargetAssemblyTypeName: UnityEngine.Collider, UnityEngine
-        m_MethodName: set_isTrigger
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+      m_Calls: []
   m_SelectExited:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4026232420440483017}
-        m_TargetAssemblyTypeName: UnityEngine.Collider, UnityEngine
-        m_MethodName: set_isTrigger
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_Activated:
     m_PersistentCalls:
       m_Calls: []
@@ -585,6 +561,7 @@ MonoBehaviour:
   rightAttachPos: {x: 0.034, y: 0.012, z: 0.047}
   rightAttachrotation: {x: 0, y: -180, z: 0}
   damage: 1
+  weaponCollider: {fileID: 4026232420440483017}
   barrelLocation: {fileID: 4026232420015103756}
   maxBullet: 30
   remainingBullet: 30
@@ -592,7 +569,6 @@ MonoBehaviour:
   delayTime: 0.1
   isReloading: 0
   secondHandGrabPoints: {fileID: 4026232419241065905}
-  twoHandRotationType: 1
 --- !u!95 &4260797618919643527
 Animator:
   serializedVersion: 3

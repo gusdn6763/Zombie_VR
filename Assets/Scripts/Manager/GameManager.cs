@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        viewObject.SetActive(true);
+       viewObject.SetActive(true);
     }
 
     /// <summary>
@@ -110,6 +110,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void StartScene()
     {
+        spawnTime += Mathf.Round(Difficulty / 2);
         currrentMobCount = 0;
         gameStarting = false;
         viewObject.SetActive(true);

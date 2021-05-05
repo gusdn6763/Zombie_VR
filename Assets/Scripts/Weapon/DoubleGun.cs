@@ -1,30 +1,34 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
+/// <summary>
+/// 두손으로 집을 수 있도록 할시 소켓에 넣으면 실행되지 않는 버그 해결 =>
+/// IsSelectableBy에서 isalreadygrabbed값이 true가 되어 상호작용이 막힘 & ProcessInteractable함수로 인해 로테이션값만 바뀜
+/// </summary>
 public class DoubleGun : Gun
 {
-    public XRSimpleInteractable secondHandGrabPoints;
+    [SerializeField] private XRSimpleInteractable secondHandGrabPoints;
     private XRBaseInteractor secondInteractor;
     private Quaternion attachInitialRotation;
-    public enum TwoHandRotationType { None, First, Second };
-    public TwoHandRotationType twoHandRotationType;
     private Quaternion initialRotationOffset;
 
-    //시작시 2번째 그랩 위치의 
+    //시작시 2번째 그랩 위치에 삽입
     void Start()
     {
-        secondHandGrabPoints.onSelectEntered.AddListener(OnSecondHandGrab);
-        secondHandGrabPoints.onSelectExited.AddListener(OnSecondHandRelease);
+        secondHandGrabPoints.selectEntered.AddListener(OnSecondHandGrab);
+        secondHandGrabPoints.selectExited.AddListener(OnSecondHandRelease);
     }
+
 
     //selectingInteractor는 레이
     //secondInteractor는 2번째 그랩
     //interactor는 플레이어 손 오브젝트
     public override void ProcessInteractable(XRInteractionUpdateOrder.UpdatePhase updatePhase)
     {
-        if (secondInteractor && selectingInteractor)
+        if (secondInteractor && selectingInteractor && !isInHolster)
         {
             selectingInteractor.attachTransform.rotation = GetTwoHandRotation();
         }
@@ -39,11 +43,11 @@ public class DoubleGun : Gun
     }
 
 
-    public void OnSecondHandGrab(XRBaseInteractor interactor)
+    public void OnSecondHandGrab(SelectEnterEventArgs args)
     {
-        if (interactor != null)
+        if (args.interactor != null)
         {
-            secondInteractor = interactor;
+            secondInteractor = args.interactor;
             if (selectingInteractor)
             {
                 initialRotationOffset = Quaternion.Inverse(GetTwoHandRotation()) * selectingInteractor.attachTransform.rotation;
@@ -51,30 +55,44 @@ public class DoubleGun : Gun
         }
     }
 
-    public void OnSecondHandRelease(XRBaseInteractor interactor)
+    public void OnSecondHandRelease(SelectExitEventArgs args)
     {
         Debug.Log("SECOND HAND RELEASE");
         secondInteractor = null;
     }
 
-    protected override void OnSelectEntered(XRBaseInteractor interactor)
+    protected override void OnSelectEntering(SelectEnterEventArgs args)
     {
         Debug.Log("First Grab Enter");
-        base.OnSelectEntered(interactor);
-        attachInitialRotation = interactor.attachTransform.localRotation;
+        base.OnSelectEntering(args);
+        attachInitialRotation = args.interactor.attachTransform.localRotation;
     }
 
-    protected override void OnSelectExited(XRBaseInteractor interactor)
+
+    protected override void OnSelectExiting(SelectExitEventArgs args)
     {
         Debug.Log("First Grab Exit");
-        base.OnSelectExited(interactor);
+        base.OnSelectExiting(args);
         secondInteractor = null;
-        interactor.attachTransform.localRotation = attachInitialRotation;
+        args.interactor.attachTransform.localRotation = attachInitialRotation;
     }
 
+    ////첫번째로 집을때 selectingInteractor는 널값
+    ////interactor는 컨트롤러값
+    ////반환 실행
+
+    ////두번째로 집을때 selectingInteractor는 레이값
+    ////interactor는 컨트롤러값 반환 실행x => 상호작용 하지않는다 => secondHandGrabPoints함수쪽 실행
     public override bool IsSelectableBy(XRBaseInteractor interactor)
     {
-        bool isalreadygrabbed = selectingInteractor && !interactor.Equals(selectingInteractor);
-        return base.IsSelectableBy(interactor) && !isalreadygrabbed;
+        if (isInHolster)
+        {
+            return base.IsSelectableBy(interactor);
+        }
+        else
+        {
+            bool isalreadygrabbed = selectingInteractor && !interactor.Equals(selectingInteractor);
+            return base.IsSelectableBy(interactor) && !isalreadygrabbed;
+        }
     }
 }

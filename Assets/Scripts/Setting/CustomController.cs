@@ -48,12 +48,10 @@ public class CustomController : MonoBehaviour
            
             if (currentWeapon.GetType() == typeof(DoubleGun))
             {
-                print(menuButtonValue);
                 currentWeapon.Attack();
             }
             else if (oneClicktriggerButtonCheck && currentWeapon.GetType() == typeof(Gun))
             {
-                print(menuButtonValue);
                 currentWeapon.Attack();
                 oneClicktriggerButtonCheck = false;
             }

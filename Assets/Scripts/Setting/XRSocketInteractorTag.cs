@@ -6,13 +6,30 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class XRSocketInteractorTag : XRSocketInteractor
 {
     public string targetTag;
+    [SerializeField] private bool realShowInteractableHoverMeshes;
+
+
+    protected override void Start()
+    {
+        base.Start();
+    }
+
+    protected override void DrawHoveredInteractables()
+    {
+        if (realShowInteractableHoverMeshes)
+        {
+            base.DrawHoveredInteractables();
+        }
+    }
 
     public override bool CanSelect(XRBaseInteractable interactable)
     {
+        
         //1첫 시작 & 여러번 반복
         return base.CanSelect(interactable) && interactable.CompareTag(targetTag);
     }
 
+    
 
     protected override void OnHoverEntered(HoverEnterEventArgs args)
     {
@@ -27,27 +44,5 @@ public class XRSocketInteractorTag : XRSocketInteractor
         {
             showInteractableHoverMeshes = false;
         }
-    }
-    protected override void OnHoverEntering(HoverEnterEventArgs args)
-    {
-        //2 한번만 실행
-        base.OnHoverEntering(args);
-    }
-
-    protected override void OnSelectExited(SelectExitEventArgs args)
-    {
-        //6
-        base.OnSelectExited(args);
-    }
-
-    protected override void OnSelectExiting(SelectExitEventArgs args)
-    {
-        //5
-        base.OnSelectExiting(args);
-    }
-
-    protected override void OnSelectExited(XRBaseInteractable interactable)
-    {
-        base.OnSelectExited(interactable);
     }
 }

@@ -6,7 +6,9 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class Gun : Weapon
 {
+
     [Header("총")]
+    [SerializeField] protected BoxCollider weaponCollider;
     [SerializeField] private Transform barrelLocation;
     [SerializeField] private int maxBullet = 10;
     [SerializeField] private int remainingBullet = 10;
@@ -16,6 +18,7 @@ public class Gun : Weapon
 
     private ParticleSystem muzzleFlash;
     protected Animator animator;
+    protected bool isInHolster;
 
     protected override void Awake()
     {
@@ -94,20 +97,33 @@ public class Gun : Weapon
 
     protected override void OnSelectEntering(SelectEnterEventArgs args)
     {
-        args.interactor.GetComponentInChildren<CustomController>().GetWeapon(this);
+        if (args.interactor.CompareTag(Constant.handLeft) || args.interactor.CompareTag(Constant.handRight))
+        {
+            args.interactor.GetComponentInChildren<CustomController>().GetWeapon(this);
+            isInHolster = false;
+        }
+        else
+        {
+            isInHolster = true;
+        }
+        weaponCollider.isTrigger = true;
         base.OnSelectEntering(args);
     }
 
     protected override void OnSelectExiting(SelectExitEventArgs args)
     {
-        if (grapingHand == HandState.LEFT)
+        if (args.interactor.CompareTag(Constant.handLeft) || args.interactor.CompareTag(Constant.handRight))
         {
-            Player.instance.playerUi.UIReflectionlLeftBullet(0, 0);
+            if (grapingHand == HandState.LEFT)
+            {
+                Player.instance.playerUi.UIReflectionlLeftBullet(0, 0);
+            }
+            else if (grapingHand == HandState.RIGHT)
+            {
+                Player.instance.playerUi.UIReflectionlRightBullet(0, 0);
+            }
         }
-        else if (grapingHand == HandState.RIGHT)
-        {
-            Player.instance.playerUi.UIReflectionlRightBullet(0, 0);
-        }
+        weaponCollider.isTrigger = false;
         base.OnSelectExiting(args);
     }
 

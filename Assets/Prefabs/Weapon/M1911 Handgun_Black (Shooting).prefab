@@ -583,6 +583,7 @@ MonoBehaviour:
   rightAttachPos: {x: -0.02, y: 0.075, z: 0.06}
   rightAttachrotation: {x: 0, y: 0, z: 0}
   damage: 1
+  weaponCollider: {fileID: 923400835328147974}
   barrelLocation: {fileID: 923400834682522786}
   maxBullet: 10
   remainingBullet: 10

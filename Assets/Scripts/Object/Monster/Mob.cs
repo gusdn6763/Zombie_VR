@@ -68,19 +68,17 @@ public class Mob : MonoBehaviour
 
     public void Update()
     {
-        if (!(enemyStatus == CharacterStatus.Die) && agent.enabled)
+        if (agent.enabled == true)
         {
             //적 캐릭터가 이동 중일 때만 회전
-            if (agent.isStopped == false)
+            if (enemyStatus == CharacterStatus.TRACE)
             {
-                if (agent.desiredVelocity != Vector3.zero)
-                {
-                    //NavMeshAgent가 가야 할 방향 벡터를 쿼터니언 타입의 각도로 변환
-                    Quaternion rot = Quaternion.LookRotation(agent.desiredVelocity);
+                //NavMeshAgent가 가야 할 방향 벡터를 쿼터니언 타입의 각도로 변환
+                Quaternion rot = Quaternion.LookRotation(agent.desiredVelocity);
 
-                    //보간 함수를 사용해 점진적으로 회전시킴
-                    this.transform.rotation = Quaternion.Slerp(transform.rotation, rot, Time.deltaTime * damping);
-                }
+                //보간 함수를 사용해 점진적으로 회전시킴
+                this.transform.rotation = Quaternion.Slerp(transform.rotation, rot, Time.deltaTime * damping);
+
             }
         }
     }
@@ -175,7 +173,7 @@ public class Mob : MonoBehaviour
     //주인공을 추적할 때 이동시키는 함수
     public void TraceTarget(Vector3 pos)
     {
-        if (agent.isPathStale && agent.enabled)
+        if (agent.enabled)
         {
             agent.destination = pos;
             agent.isStopped = false;
@@ -224,7 +222,6 @@ public class Mob : MonoBehaviour
         monsterCollider.enabled = false;
         gameObject.tag = "Untagged";
         isAttack = false;
-        print("11");
         animator.SetTrigger(Constant.die);
     }
 
