@@ -182,6 +182,7 @@ public class Mob : MonoBehaviour
         damage = enhanceMob[GameManager.instance.Difficulty - 1].damage;
         speed = enhanceMob[GameManager.instance.Difficulty - 1].speed;
         hp = enhanceMob[GameManager.instance.Difficulty - 1].hp;
+        currentHp = hp;
         speed += UnityEngine.Random.Range(0.0f, 0.5f);
     }
 

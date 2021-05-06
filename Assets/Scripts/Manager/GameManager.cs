@@ -116,9 +116,9 @@ public class GameManager : MonoBehaviour
         viewObject.SetActive(true);
         spawnPoints = GameObject.FindWithTag(Constant.spawn).GetComponentsInChildren<Transform>();
 
-        Player.instance.transform.position = savePlayerPos;
-        Player.instance.transform.rotation = Quaternion.Euler(savePlayerRot.x, savePlayerRot.y, savePlayerRot.z);
-        ObjectPoolManager.instance.transform.position = new Vector3(savePlayerPos.x + 1.5f, savePlayerPos.y, savePlayerPos.z + 1);
-        ObjectPoolManager.instance.transform.rotation = Quaternion.Euler(savePlayerRot.x, -savePlayerRot.y, savePlayerRot.z);
+        //Player.instance.transform.position = savePlayerPos;
+        //Player.instance.transform.rotation = Quaternion.Euler(savePlayerRot.x, savePlayerRot.y, savePlayerRot.z);
+        //ObjectPoolManager.instance.transform.position = new Vector3(savePlayerPos.x + 1.5f, savePlayerPos.y, savePlayerPos.z + 1);
+        //ObjectPoolManager.instance.transform.rotation = Quaternion.Euler(savePlayerRot.x, -savePlayerRot.y, savePlayerRot.z);
     }
 }

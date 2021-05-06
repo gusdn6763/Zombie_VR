@@ -17,21 +17,22 @@ public class GoblinRanger : Mob
 
     public override void Start()
     {
+        monsterCollider.enabled = false;
         i = avoidancePos.Length;
         base.Start();
         StartCoroutine(GoblinStart());
-
     }
 
 
     public IEnumerator GoblinStart()
     {
-        while(enemyStatus != CharacterStatus.Die)
+        while (true)
         {
             if (GameManager.instance.gameStarting)
             {
                 EnhanceMob();
                 yield return new WaitForSeconds(10f);
+                monsterCollider.enabled = true;
                 GoblinAttack();
                 break ;
             }
@@ -55,8 +56,8 @@ public class GoblinRanger : Mob
         if (currentArrow != null)
         {
             currentArrow.gameObject.SetActive(false);
-            currentArrow = null;
         }
+        currentArrow = null;
     }
 
     public void MakeArrow()
@@ -76,7 +77,6 @@ public class GoblinRanger : Mob
     public void TargettingArrow()
     {
         currentArrow.transform.SetParent(beforeAttackArrowPos);
-        print(beforeAttackArrowPos.position.y);
         currentArrow.transform.position = new Vector3(beforeAttackArrowPos.position.x, beforeAttackArrowPos.position.y +0.45f, beforeAttackArrowPos.position.z);
         Vector3 test = transform.eulerAngles;
         currentArrow.transform.eulerAngles = new Vector3(test.x - 20f, test.y, test.z);
@@ -116,9 +116,9 @@ public class GoblinRanger : Mob
 
     public IEnumerator MoveToPointCoroutine()
     {
-        enemyStatus = CharacterStatus.TRACE;
         yield return new WaitForSeconds(waitTime);
         animator.SetBool(Constant.move, true);
+        enemyStatus = CharacterStatus.TRACE;
         TraceTarget(avoidancePos[i].position);
         bool test = false;
         while (!test)
@@ -127,10 +127,10 @@ public class GoblinRanger : Mob
             {
                 test = true;
                 animator.SetBool(Constant.move, false);
+                enemyStatus = CharacterStatus.IDLE;
             }
             yield return null;
         }
-        enemyStatus = CharacterStatus.IDLE;
         GoblinAttack();
     }
 
