@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
     private XRRig rig;                          
     public PlayerUI playerUi;
 
-
+    public XRController climbingHand;
     private Vector2 inputAxis;
     public bool keyCheck = false;
     public float mass = 1f;                                     //영향받는 중력크기
@@ -58,9 +58,17 @@ public class Player : MonoBehaviour
 
         if (GameManager.instance.gameStarting)
         {
-            if (!moveImpossible)
+            if (climbingHand)
+            {
+                Climb();
+            }
+            else if(!moveImpossible)
             {
                 StartMove();
+                ApplyGravity();
+            }
+            else
+            {
                 ApplyGravity();
             }
         }
@@ -121,6 +129,13 @@ public class Player : MonoBehaviour
             GameManager.instance.isGameOver = true;
             SoundManager.instance.PlaySE(Constant.playerDieSound);
         }
+    }
+
+    void Climb()
+    {
+        InputDevices.GetDeviceAtXRNode(climbingHand.controllerNode).TryGetFeatureValue(CommonUsages.deviceVelocity, out Vector3 velocity);
+
+        characterController.Move(transform.rotation * -velocity * Time.fixedDeltaTime);
     }
 
     private void OnTriggerEnter(Collider other)

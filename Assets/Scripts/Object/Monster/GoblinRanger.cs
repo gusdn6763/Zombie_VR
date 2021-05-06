@@ -20,6 +20,7 @@ public class GoblinRanger : Mob
         i = avoidancePos.Length;
         base.Start();
         StartCoroutine(GoblinStart());
+
     }
 
 
@@ -29,6 +30,7 @@ public class GoblinRanger : Mob
         {
             if (GameManager.instance.gameStarting)
             {
+                EnhanceMob();
                 yield return new WaitForSeconds(10f);
                 GoblinAttack();
                 break ;
@@ -74,6 +76,7 @@ public class GoblinRanger : Mob
     public void TargettingArrow()
     {
         currentArrow.transform.SetParent(beforeAttackArrowPos);
+        print(beforeAttackArrowPos.position.y);
         currentArrow.transform.position = new Vector3(beforeAttackArrowPos.position.x, beforeAttackArrowPos.position.y +0.45f, beforeAttackArrowPos.position.z);
         Vector3 test = transform.eulerAngles;
         currentArrow.transform.eulerAngles = new Vector3(test.x - 20f, test.y, test.z);
@@ -113,6 +116,7 @@ public class GoblinRanger : Mob
 
     public IEnumerator MoveToPointCoroutine()
     {
+        enemyStatus = CharacterStatus.TRACE;
         yield return new WaitForSeconds(waitTime);
         animator.SetBool(Constant.move, true);
         TraceTarget(avoidancePos[i].position);
@@ -126,6 +130,7 @@ public class GoblinRanger : Mob
             }
             yield return null;
         }
+        enemyStatus = CharacterStatus.IDLE;
         GoblinAttack();
     }
 

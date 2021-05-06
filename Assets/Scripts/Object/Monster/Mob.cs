@@ -35,8 +35,8 @@ public class Mob : MonoBehaviour
     [SerializeField] private EnhanceMob[] enhanceMob = new EnhanceMob[3];
     [SerializeField] protected float attackDist;
 
-    private Collider monsterCollider;
     private GameObject bloodEffect;
+    protected Collider monsterCollider;
     protected NavMeshAgent agent;
     protected Animator animator;
     protected Transform target;
@@ -85,9 +85,9 @@ public class Mob : MonoBehaviour
 
     public virtual void StartingMob()
     {
+        EnhanceMob();
         StartCoroutine(CheckState());
         StartCoroutine(Action());
-        EnhanceMob();
     }
 
     IEnumerator CheckState()
@@ -113,12 +113,9 @@ public class Mob : MonoBehaviour
     {
         while (true)
         {
-            yield return (0.3f);
+            yield return (0.5f);
             switch (enemyStatus)
             {
-                case CharacterStatus.IDLE:
-                    agent.isStopped = true;
-                    break;
                 case CharacterStatus.TRACE:
                     if (isAttack)
                     {

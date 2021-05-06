@@ -11,7 +11,7 @@ public class ClimbInteractable : XRBaseInteractable
         base.OnSelectEntered(args);
 
         if (args.interactor is XRDirectInteractor)
-            Climber.climbingHand = args.interactor.GetComponent<XRController>();
+            Player.instance.climbingHand = args.interactor.GetComponent<XRController>();
     }
 
     protected override void OnSelectExited(SelectExitEventArgs args)
@@ -20,9 +20,9 @@ public class ClimbInteractable : XRBaseInteractable
 
         if (args.interactor is XRDirectInteractor)
         {
-            if (Climber.climbingHand && Climber.climbingHand.name == args.interactor.name)
+            if (Player.instance.climbingHand && Player.instance.climbingHand.name == args.interactor.name)
             {
-                Climber.climbingHand = null;
+                Player.instance.climbingHand = null;
             }
         }
     }

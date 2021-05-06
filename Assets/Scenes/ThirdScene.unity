@@ -329,7 +329,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 913080771256363867, guid: a05561bb66c271e4c99974793efc6601, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 913080771256363867, guid: a05561bb66c271e4c99974793efc6601, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 913080771256363869, guid: a05561bb66c271e4c99974793efc6601, type: 3}
       propertyPath: m_RootOrder
@@ -593,7 +597,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 913080771256363867, guid: a05561bb66c271e4c99974793efc6601, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 913080771256363867, guid: a05561bb66c271e4c99974793efc6601, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 913080771256363869, guid: a05561bb66c271e4c99974793efc6601, type: 3}
       propertyPath: m_RootOrder
@@ -1994,7 +2002,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9df218390ab713a4495d95929ca66db2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goblinCollider: []
 --- !u!4 &1570656673
 Transform:
   m_ObjectHideFlags: 0
@@ -2264,7 +2271,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 913080771256363867, guid: a05561bb66c271e4c99974793efc6601, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 913080771256363867, guid: a05561bb66c271e4c99974793efc6601, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 913080771256363869, guid: a05561bb66c271e4c99974793efc6601, type: 3}
       propertyPath: m_RootOrder
@@ -103279,7 +103290,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 913080771256363867, guid: a05561bb66c271e4c99974793efc6601, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 913080771256363867, guid: a05561bb66c271e4c99974793efc6601, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 913080771256363869, guid: a05561bb66c271e4c99974793efc6601, type: 3}
       propertyPath: m_RootOrder

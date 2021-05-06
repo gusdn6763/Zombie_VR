@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
     public bool gameStarting = false;                               //난이도 선택시 true활성화
     public bool isGameOver = false;                                 //플레이어 죽을시 true활성화
 
-    public int Difficulty { get; set; }
+    public int Difficulty { get; set; } = 1;
 
     private void Awake()
     {
@@ -116,7 +116,6 @@ public class GameManager : MonoBehaviour
         viewObject.SetActive(true);
         spawnPoints = GameObject.FindWithTag(Constant.spawn).GetComponentsInChildren<Transform>();
 
-        Player.instance.moveImpossible = true;
         Player.instance.transform.position = savePlayerPos;
         Player.instance.transform.rotation = Quaternion.Euler(savePlayerRot.x, savePlayerRot.y, savePlayerRot.z);
         ObjectPoolManager.instance.transform.position = new Vector3(savePlayerPos.x + 1.5f, savePlayerPos.y, savePlayerPos.z + 1);

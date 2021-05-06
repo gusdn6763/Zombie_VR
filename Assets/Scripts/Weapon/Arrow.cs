@@ -29,6 +29,7 @@ public class Arrow : MonoBehaviour
 
     public void ArrowShoot(int damage)
     {
+        this.damage = damage;
         transform.SetParent(null);
         transform.LookAt(Player.instance.transform);
         rigi.AddForce(transform.forward * shotPower);
