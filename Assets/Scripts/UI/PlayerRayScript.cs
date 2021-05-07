@@ -33,7 +33,7 @@ public class PlayerRayScript : MonoBehaviour
             new GradientColorKey[] { new GradientColorKey(startColor, 0.0f), new GradientColorKey(endColor, 0.0f) },
             new GradientAlphaKey[] { new GradientAlphaKey(0.0f, 0.0f), new GradientAlphaKey(0.0f, 0.0f) }
         );
-        GradientCheck(true);
+        GradientCheck(false);
     }
     // Update is called once per frame
     void Update()

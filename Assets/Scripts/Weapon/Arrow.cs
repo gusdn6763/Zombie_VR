@@ -39,6 +39,7 @@ public class Arrow : MonoBehaviour
     IEnumerator BulletDisable()
     {
         yield return new WaitForSeconds(4f);
+        transform.SetParent(pos.transform, true);
         gameObject.SetActive(false);
     }
 

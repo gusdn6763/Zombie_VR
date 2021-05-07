@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     private Transform[] spawnPoints = null;                         //몹 스폰 포인트
     private Vector3 savePlayerPos;                                  //플레이어 시작위치
     private Vector3 savePlayerRot;                                  //플레이어 시작위치
-    private int currrentMobCount = 0;                               //현재 몹 갯수
+    public int currrentMobCount = 0;                               //현재 몹 갯수
 
     public string currenBgm;                                        //현재 실행중인 음악
     public int currentSceneLevel = 0;                               //현재 스테이지 레벨
@@ -116,9 +116,9 @@ public class GameManager : MonoBehaviour
         viewObject.SetActive(true);
         spawnPoints = GameObject.FindWithTag(Constant.spawn).GetComponentsInChildren<Transform>();
 
-        //Player.instance.transform.position = savePlayerPos;
-        //Player.instance.transform.rotation = Quaternion.Euler(savePlayerRot.x, savePlayerRot.y, savePlayerRot.z);
-        //ObjectPoolManager.instance.transform.position = new Vector3(savePlayerPos.x + 1.5f, savePlayerPos.y, savePlayerPos.z + 1);
-        //ObjectPoolManager.instance.transform.rotation = Quaternion.Euler(savePlayerRot.x, -savePlayerRot.y, savePlayerRot.z);
+        Player.instance.transform.position = savePlayerPos;
+        Player.instance.transform.rotation = Quaternion.Euler(savePlayerRot.x, savePlayerRot.y, savePlayerRot.z);
+        ObjectPoolManager.instance.transform.position = new Vector3(savePlayerPos.x + 1.5f, savePlayerPos.y, savePlayerPos.z + 1);
+        ObjectPoolManager.instance.transform.rotation = Quaternion.Euler(savePlayerRot.x, -savePlayerRot.y, savePlayerRot.z);
     }
 }

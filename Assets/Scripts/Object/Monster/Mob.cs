@@ -228,6 +228,7 @@ public class Mob : MonoBehaviour
     /// </summary>
     public void Dead()
     {
+        GameManager.instance.currrentMobCount--;
         Destroy(this.gameObject, 1f);
     }
 

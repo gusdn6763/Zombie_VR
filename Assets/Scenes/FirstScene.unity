@@ -2878,7 +2878,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: 15
   currentHp: 15
-  speed: 2
+  speed: 2.5
   playerMoveDevice: 4
   playerUi: {fileID: 2139722987}
   climbingHand: {fileID: 0}
@@ -21997,7 +21997,7 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 0.6698113, g: 0.6698113, b: 0.6698113, a: 1}
+  m_Color: {r: 0.14150941, g: 0.14150941, b: 0.14150941, a: 1}
   m_Intensity: 0.5
   m_Range: 10
   m_SpotAngle: 30
@@ -50931,6 +50931,7 @@ MonoBehaviour:
   viewObject: {fileID: 1881898916501057652}
   mobMaxCount: 20
   spawnTime: 5
+  currrentMobCount: 0
   currenBgm: MainBgm
   currentSceneLevel: 1
   gameStarting: 0

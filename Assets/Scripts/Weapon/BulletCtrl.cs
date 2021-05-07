@@ -53,6 +53,8 @@ public class BulletCtrl : MonoBehaviour
         }
     }
 
+
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag(Constant.monster))
@@ -68,4 +70,32 @@ public class BulletCtrl : MonoBehaviour
             gameObject.SetActive(false);
         }
     }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag(Constant.zombiePart))
+        {
+            other.GetComponent<Part>().Damaged(damage, transform.position);
+            gameObject.SetActive(false);
+        }
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        if (collision.gameObject.CompareTag(Constant.monster))
+        {
+            collision.gameObject.GetComponent<Mob>().Damaged(damage, transform.position);
+            gameObject.SetActive(false);
+        }
+        else if (collision.gameObject.CompareTag(Constant.zombiePart))
+        {
+        }
+        else
+        {
+            gameObject.SetActive(false);
+        }
+    }
+
+
+
 }
