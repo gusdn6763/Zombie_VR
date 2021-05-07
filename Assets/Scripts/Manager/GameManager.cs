@@ -102,6 +102,7 @@ public class GameManager : MonoBehaviour
         currentSceneLevel = moveStageLevel;
         savePlayerPos = startPosition;
         savePlayerRot = startRotation;
+        gameStarting = false;
         SceneManager.LoadScene(Constant.loadingScene);
     }
 
@@ -112,7 +113,6 @@ public class GameManager : MonoBehaviour
     {
         spawnTime += Mathf.Round(Difficulty / 2);
         currrentMobCount = 0;
-        gameStarting = false;
         viewObject.SetActive(true);
         spawnPoints = GameObject.FindWithTag(Constant.spawn).GetComponentsInChildren<Transform>();
 
