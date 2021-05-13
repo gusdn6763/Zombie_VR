@@ -6,17 +6,11 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class XRSocketInteractorTag : XRSocketInteractor
 {
     public string targetTag;
-    [SerializeField] private bool realShowInteractableHoverMeshes;
-
-
-    protected override void Start()
-    {
-        base.Start();
-    }
+    private bool isUsing = false;
 
     protected override void DrawHoveredInteractables()
     {
-        if (realShowInteractableHoverMeshes)
+        if (!isUsing)
         {
             base.DrawHoveredInteractables();
         }
@@ -24,25 +18,43 @@ public class XRSocketInteractorTag : XRSocketInteractor
 
     public override bool CanSelect(XRBaseInteractable interactable)
     {
-        
         //1첫 시작 & 여러번 반복
         return base.CanSelect(interactable) && interactable.CompareTag(targetTag);
     }
 
-    
-
     protected override void OnHoverEntered(HoverEnterEventArgs args)
     {
-        //3 한번만 실행?
         if (args.interactable.CompareTag(targetTag))
         {
+            if (!isUsing)
+            {
+                GetComponent<MeshRenderer>().enabled = true;
+            }
+        }
+        base.OnHoverEntered(args);
+    }
 
-            showInteractableHoverMeshes = true;
-            base.OnHoverEntered(args);
-        }
-        else
+    protected override void OnHoverExited(HoverExitEventArgs args)
+    {
+        GetComponent<MeshRenderer>().enabled = false;
+        base.OnHoverExited(args);
+    }
+
+    protected override void OnSelectEntered(SelectEnterEventArgs args)
+    {
+        if (args.interactable.CompareTag(targetTag))
         {
-            showInteractableHoverMeshes = false;
+            isUsing = true;
         }
+        base.OnSelectEntered(args);
+    }
+
+    protected override void OnSelectExited(SelectExitEventArgs args)
+    {
+        if (args.interactable.CompareTag(targetTag))
+        {
+            isUsing = false;
+        }
+        base.OnSelectExited(args);
     }
 }

@@ -50,7 +50,7 @@ public class DoubleGun : Gun
             secondInteractor = args.interactor;
             if (selectingInteractor)
             {
-                gunRay.GradientCheck(true);
+                gunRay.GradientCheck(rayCheck);
                 initialRotationOffset = Quaternion.Inverse(GetTwoHandRotation()) * selectingInteractor.attachTransform.rotation;
             }
         }
@@ -59,6 +59,7 @@ public class DoubleGun : Gun
     public void OnSecondHandRelease(SelectExitEventArgs args)
     {
         Debug.Log("SECOND HAND RELEASE");
+        gunRay.GradientCheck(false);
         secondInteractor = null;
     }
 

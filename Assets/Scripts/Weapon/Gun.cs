@@ -6,7 +6,6 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class Gun : Weapon
 {
-
     [Header("총")]
     [SerializeField] private Transform barrelLocation;
     [SerializeField] protected BoxCollider weaponCollider;
@@ -20,6 +19,7 @@ public class Gun : Weapon
     protected PlayerRayScript gunRay;
     protected Animator animator;
     protected bool isInHolster;
+    protected bool rayCheck;
 
     protected override void Awake()
     {
@@ -102,7 +102,7 @@ public class Gun : Weapon
         if (args.interactor.CompareTag(Constant.handLeft) || args.interactor.CompareTag(Constant.handRight))
         {
             args.interactor.GetComponentInChildren<CustomController>().GetWeapon(this);
-            gunRay.GradientCheck(true);
+            gunRay.GradientCheck(rayCheck);
             isInHolster = false;
         }
         else
@@ -117,6 +117,8 @@ public class Gun : Weapon
     {
         if (args.interactor.CompareTag(Constant.handLeft) || args.interactor.CompareTag(Constant.handRight))
         {
+            args.interactor.GetComponentInChildren<CustomController>().DropWeapon();
+            gunRay.GradientCheck(false);
             if (grapingHand == HandState.LEFT)
             {
                 Player.instance.playerUi.UIReflectionlLeftBullet(0, 0);
@@ -132,6 +134,7 @@ public class Gun : Weapon
 
     public void UpdateBulletText()
     {
+
         if (grapingHand == HandState.LEFT)
         {
             Player.instance.playerUi.UIReflectionlLeftBullet(remainingBullet, maxBullet);
@@ -140,5 +143,10 @@ public class Gun : Weapon
         {
             Player.instance.playerUi.UIReflectionlRightBullet(remainingBullet, maxBullet);
         }
+    }
+
+    public void RayCheck(bool isOn)
+    {
+        rayCheck = isOn;
     }
 }
