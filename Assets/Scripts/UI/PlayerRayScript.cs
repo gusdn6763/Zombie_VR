@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,13 +6,13 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class PlayerRayScript : MonoBehaviour
 {
-    private XRInteractorLineVisual xRInteractorLineVisual;
     [SerializeField] private Color startColor;
     [SerializeField] private Color endColor;
     [Range(0, 1)]
     [SerializeField] private float alphaValue;
     [SerializeField] private float speed = 1f;
 
+    private XRInteractorLineVisual xRInteractorLineVisual;
     private Material material;
     private Gradient disableGradient = new Gradient();
     private Gradient enableGradient = new Gradient();
@@ -20,6 +21,7 @@ public class PlayerRayScript : MonoBehaviour
     {
         xRInteractorLineVisual = GetComponent<XRInteractorLineVisual>();
         material = GetComponent<LineRenderer>().materials[0];
+        GradientCheck(false);
     }
 
     private void Start()
@@ -33,7 +35,6 @@ public class PlayerRayScript : MonoBehaviour
             new GradientColorKey[] { new GradientColorKey(startColor, 0.0f), new GradientColorKey(endColor, 0.0f) },
             new GradientAlphaKey[] { new GradientAlphaKey(0.0f, 0.0f), new GradientAlphaKey(0.0f, 0.0f) }
         );
-        GradientCheck(false);
     }
     // Update is called once per frame
     void Update()

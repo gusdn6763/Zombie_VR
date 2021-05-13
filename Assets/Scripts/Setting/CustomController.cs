@@ -8,6 +8,7 @@ public class CustomController : MonoBehaviour
 {
     //디바이스 모델들
     [SerializeField] private List<GameObject> controllerModels;
+    [SerializeField] private PlayerRayScript handRay;
     private Animator handAnimator;
     private GameObject controllerInstance; //디바이스 오브젝트
     private GameObject handInstance;       //hand 오브젝트
@@ -26,6 +27,7 @@ public class CustomController : MonoBehaviour
         TryInitialize();
         CheckHandOrController();
         SetControllerPosition();
+        handRay.GradientCheck(false);
     }
 
     private void Update()
@@ -45,7 +47,6 @@ public class CustomController : MonoBehaviour
         }
         if (currentUsingDevice.TryGetFeatureValue(CommonUsages.triggerButton, out menuButtonValue) && menuButtonValue && currentWeapon != null)
         {
-           
             if (currentWeapon.GetType() == typeof(DoubleGun))
             {
                 currentWeapon.Attack();
@@ -163,6 +164,7 @@ public class CustomController : MonoBehaviour
     {
         if (currentGun != null)
         {
+            handRay.GradientCheck(false);
             this.currentWeapon = currentGun;
             this.currentWeapon.grapingHand = currentHand;
             this.currentWeapon.UpdateBulletText();
@@ -171,6 +173,7 @@ public class CustomController : MonoBehaviour
 
     public void DropWeapon()
     {
+        handRay.GradientCheck(true);
         currentWeapon = null;
     }
 }

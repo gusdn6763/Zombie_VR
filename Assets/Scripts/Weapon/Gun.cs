@@ -8,8 +8,8 @@ public class Gun : Weapon
 {
 
     [Header("총")]
-    [SerializeField] protected BoxCollider weaponCollider;
     [SerializeField] private Transform barrelLocation;
+    [SerializeField] protected BoxCollider weaponCollider;
     [SerializeField] private int maxBullet = 10;
     [SerializeField] private int remainingBullet = 10;
     [SerializeField] private float reloadTime = 2.0f;
@@ -17,6 +17,7 @@ public class Gun : Weapon
     [SerializeField] private bool isReloading = false;
 
     private ParticleSystem muzzleFlash;
+    protected PlayerRayScript gunRay;
     protected Animator animator;
     protected bool isInHolster;
 
@@ -26,6 +27,7 @@ public class Gun : Weapon
         animator = GetComponent<Animator>();
         muzzleFlash = barrelLocation.GetComponentInChildren<ParticleSystem>();
         interactionManager = FindObjectOfType<XRInteractionManager>();
+        gunRay = barrelLocation.GetComponent<PlayerRayScript>();
     }
 
     public void Attack()
@@ -100,6 +102,7 @@ public class Gun : Weapon
         if (args.interactor.CompareTag(Constant.handLeft) || args.interactor.CompareTag(Constant.handRight))
         {
             args.interactor.GetComponentInChildren<CustomController>().GetWeapon(this);
+            gunRay.GradientCheck(true);
             isInHolster = false;
         }
         else
