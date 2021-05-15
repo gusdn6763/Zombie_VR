@@ -6,10 +6,21 @@ public class MobRange : MonoBehaviour
 {
     private Mob[] mobs;
     private bool check = false;
+    public Vector2 patrolRange;
 
     private void Awake()
     {
         mobs = GetComponentsInChildren<Mob>();
+    }
+
+    private void Start()
+    {
+        patrolRange = new Vector2(transform.position.x, transform.position.z);
+        for (int i = 0; i < mobs.Length; i++)
+        {
+            mobs[i].StopAllCoroutines();
+            mobs[i].RandomPatrol(patrolRange);
+        }
     }
 
     public void TraceingPlayer()
@@ -21,10 +32,8 @@ public class MobRange : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if ((other.CompareTag(Constant.weapon) || other.CompareTag(Constant.player)) &&
-            check == false)
+        if ((other.CompareTag(Constant.weapon) || other.CompareTag(Constant.player)) && check == false)
         {
-            print(other.gameObject);
             check = true;
             TraceingPlayer();
         }

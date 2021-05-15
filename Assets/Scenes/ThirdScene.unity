@@ -6248,6 +6248,7 @@ MonoBehaviour:
   attackDist: 10000
   damage: 0
   enemyStatus: 0
+  patrolPos: {x: 0, y: 0, z: 0}
   grabArrowPos: {fileID: 1091481940}
   beforeAttackArrowPos: {fileID: 606431511}
   avoidancePos: []
@@ -6917,6 +6918,7 @@ MonoBehaviour:
   attackDist: 10000
   damage: 0
   enemyStatus: 0
+  patrolPos: {x: 0, y: 0, z: 0}
   grabArrowPos: {fileID: 1051857471}
   beforeAttackArrowPos: {fileID: 1666524563}
   avoidancePos: []
@@ -118438,6 +118440,7 @@ MonoBehaviour:
   attackDist: 10000
   damage: 0
   enemyStatus: 0
+  patrolPos: {x: 0, y: 0, z: 0}
   grabArrowPos: {fileID: 172121681534043346}
   beforeAttackArrowPos: {fileID: 172121680388696397}
   avoidancePos:
@@ -118632,6 +118635,7 @@ MonoBehaviour:
   attackDist: 10000
   damage: 0
   enemyStatus: 0
+  patrolPos: {x: 0, y: 0, z: 0}
   grabArrowPos: {fileID: 172121681275595910}
   beforeAttackArrowPos: {fileID: 172121680139763993}
   avoidancePos:

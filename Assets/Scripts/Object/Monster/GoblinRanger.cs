@@ -76,10 +76,13 @@ public class GoblinRanger : Mob
 
     public void TargettingArrow()
     {
-        currentArrow.transform.SetParent(beforeAttackArrowPos);
-        currentArrow.transform.position = new Vector3(beforeAttackArrowPos.position.x, beforeAttackArrowPos.position.y +0.45f, beforeAttackArrowPos.position.z);
-        Vector3 test = transform.eulerAngles;
-        currentArrow.transform.eulerAngles = new Vector3(test.x - 20f, test.y, test.z);
+        if (currentArrow != null)
+        {
+            currentArrow.transform.SetParent(beforeAttackArrowPos);
+            currentArrow.transform.position = new Vector3(beforeAttackArrowPos.position.x, beforeAttackArrowPos.position.y + 0.45f, beforeAttackArrowPos.position.z);
+            Vector3 test = transform.eulerAngles;
+            currentArrow.transform.eulerAngles = new Vector3(test.x - 20f, test.y, test.z);
+        }
     }
 
     /// <summary>

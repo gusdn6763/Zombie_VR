@@ -535,7 +535,7 @@ MonoBehaviour:
   maxBullet: 30
   remainingBullet: 30
   reloadTime: 3
-  delayTime: 0.1
+  delayTime: 0.05
   isReloading: 0
   secondHandGrabPoints: {fileID: 4026232419241065905}
 --- !u!95 &4260797618919643527

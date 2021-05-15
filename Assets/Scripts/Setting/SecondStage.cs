@@ -27,7 +27,7 @@ public class SecondStage : MonoBehaviour
     public IEnumerator Testing()
     {
         yield return new WaitUntil( () => GameManager.instance.gameStarting);
-        yield return new WaitForSeconds(9f);
+        yield return new WaitForSeconds(10f);
         StartCoroutine(PlayerMove());
     }
 

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 public enum CharacterStatus
 {
@@ -109,7 +110,7 @@ public class Mob : MonoBehaviour
         }
     }
 
-    IEnumerator Action()
+    public IEnumerator Action()
     {
         while (true)
         {
@@ -230,6 +231,33 @@ public class Mob : MonoBehaviour
     {
         GameManager.instance.currrentMobCount--;
         Destroy(this.gameObject, 1f);
+    }
+
+    public void RandomPatrol(Vector2 range)
+    {
+        StartCoroutine(RandomPatrolCoroutine(range));
+    }
+
+    public Vector3 patrolPos;
+    IEnumerator RandomPatrolCoroutine(Vector2 range)
+    {
+        agent.speed = 0.2f;
+        damping = 7.0f;
+        while (enemyStatus == CharacterStatus.IDLE)
+        {
+            patrolPos = new Vector3(Random.Range(range.x - 5, range.x + 5), transform.position.y, Random.Range(range.y - 5, range.y + 5));
+            float dist = Vector3.Distance(patrolPos, transform.position);
+            while (dist >= 1f && enemyStatus == CharacterStatus.IDLE)
+            {
+                dist = Vector3.Distance(patrolPos, transform.position);
+                animator.SetBool(Constant.move, true);
+                animator.SetFloat(Constant.speed, 0.2f);
+                Quaternion rot = Quaternion.LookRotation(agent.desiredVelocity);
+                this.transform.rotation = Quaternion.Slerp(transform.rotation, rot, Time.deltaTime * damping);
+                TraceTarget(patrolPos);
+                yield return null;
+            }
+        }
     }
 
 }

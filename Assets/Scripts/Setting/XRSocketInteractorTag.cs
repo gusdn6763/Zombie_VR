@@ -7,10 +7,11 @@ public class XRSocketInteractorTag : XRSocketInteractor
 {
     public string targetTag;
     private bool isUsing = false;
+    private bool realShowMesh = false;
 
     protected override void DrawHoveredInteractables()
     {
-        if (!isUsing)
+        if (!isUsing && realShowMesh)
         {
             base.DrawHoveredInteractables();
         }
@@ -26,16 +27,22 @@ public class XRSocketInteractorTag : XRSocketInteractor
     {
         if (args.interactable.CompareTag(targetTag))
         {
+            realShowMesh = true;
             if (!isUsing)
             {
                 GetComponent<MeshRenderer>().enabled = true;
             }
+        }
+        else
+        {
+            realShowMesh = false;
         }
         base.OnHoverEntered(args);
     }
 
     protected override void OnHoverExited(HoverExitEventArgs args)
     {
+        realShowMesh = false;
         GetComponent<MeshRenderer>().enabled = false;
         base.OnHoverExited(args);
     }
