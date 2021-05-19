@@ -125,9 +125,12 @@ public class Player : MonoBehaviour
         {
             speed = 0f;
             StopAllCoroutines();
-            playerUi.PlayerDieUI();
             GameManager.instance.isGameOver = true;
             SoundManager.instance.PlaySE(Constant.playerDieSound);
+            if (playerUi.isActiveAndEnabled)
+            {
+                playerUi.PlayerDieUI();
+            }
         }
     }
 
