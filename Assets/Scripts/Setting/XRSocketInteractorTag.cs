@@ -19,7 +19,6 @@ public class XRSocketInteractorTag : XRSocketInteractor
 
     public override bool CanSelect(XRBaseInteractable interactable)
     {
-        //1첫 시작 & 여러번 반복
         return base.CanSelect(interactable) && interactable.CompareTag(targetTag);
     }
 
